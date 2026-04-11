@@ -11,24 +11,24 @@ void drawBattle(Player& player, Enemy& enemy) {
     cout << CLEAR;
 
     // 좌상단: 플레이어 상태창
-    gotoxy(1, 1); cout << "+-------------------------+";
-    gotoxy(2, 1); cout << "| 슬라임                  |";
-    gotoxy(3, 1); cout << "| HP: ";
+    gotoxy(1, 1); cout << "┏━━━━━━━━━━━━━━━━━━━━━━━━━━┓";
+    gotoxy(2, 1); cout << "┃ 슬라임                   ┃";
+    gotoxy(3, 1); cout << "┃ HP: ";
     drawHpBar(player.hp, player.maxHp);
-    gotoxy(4, 1); cout << "| MP: ";
+    gotoxy(4, 1); cout << "┃ MP: ";
     drawHpBar(player.mp, player.maxMp);
-    gotoxy(5, 1); cout << "+-------------------------+";
+    gotoxy(5, 1); cout << "┗━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
 
 
     // 슬롯 현황 출력 추가 필요
 
     // 우상단: 몬스터 상태창
-    gotoxy(1, 50); cout << "+-------------------------+";
-    gotoxy(2, 50); cout << "| <" << enemy.grade <<" 정령" << "> " << "            |";
-    gotoxy(3, 50); cout << "| " << enemy.name;
-    gotoxy(4, 50); cout << "| HP: ";
+    gotoxy(1, 50); cout << "┏━━━━━━━━━━━━━━━━━━━━━━━━━━┓";
+    gotoxy(2, 50); cout << "┃ <" << enemy.grade <<" 정령" << "> " << "             ┃";
+    gotoxy(3, 50); cout << "┃ " << enemy.name;
+    gotoxy(4, 50); cout << "┃HP: ";
     drawHpBar(enemy.hp, enemy.maxHp);
-    gotoxy(5, 50); cout << "+-------------------------+";
+    gotoxy(5, 50); cout << "┗━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
 
     // 적 행동 예고 출력 추가 필요
     // gotoxy(5, 50); cout << "| 다음 행동: [공격 - 15] |";
@@ -46,11 +46,11 @@ void drawBattle(Player& player, Enemy& enemy) {
     // 전투 로그 출력 영역 추가 필요
 
     // 좌하단: 스킬 메뉴
-    gotoxy(15, 1); cout << "+-------------------------+";
-    gotoxy(16, 1); cout << "|  1: 원소 공격           |";
-    gotoxy(17, 1); cout << "|  2: 조합 공격           |";
-    gotoxy(18, 1); cout << "|  3: 방어 하기           |";
-    gotoxy(19, 1); cout << "+-------------------------+";
+    gotoxy(15, 1); cout << "┏━━━━━━━━━━━━━━━━━━━━━━━━━━┓";
+    gotoxy(16, 1); cout << "┃  1: 원소 공격            ┃";
+    gotoxy(17, 1); cout << "┃  2: 조합 공격            ┃";
+    gotoxy(18, 1); cout << "┃  3: 방어 하기            ┃";
+    gotoxy(19, 1); cout << "┗━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
 
     // 원소 공격 선택 시 세부 메뉴 구현 필요
     // 슬롯에 장착된 원소에 따라 기술 3종 표시
@@ -60,7 +60,7 @@ void drawBattle(Player& player, Enemy& enemy) {
     //            물+흙=진흙 / 물+바람=빙결 / 흙+바람=모래
 
     // 하단: 입력
-    gotoxy(21, 1); cout << "[ 1: 원소 공격   2: 조합 공격   3: 방어 하기 ]";
-    gotoxy(22, 1); cout << "선택 >> ";
+    gotoxy(21, 1); cout << "【  1: 원소 공격   2: 조합 공격   3: 방어 하기  】";
+    gotoxy(22, 1); cout << "선택 ⇒ ";
 }
 
