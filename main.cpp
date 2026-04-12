@@ -1,23 +1,55 @@
 #include <windows.h>
 #include "Map.h"
 #include "Battle.h"
+#include "Scene.h"
+#include "Player.h"
+#include <iostream>
+#include <string>
+
+string translateElement(string engElem) {
+    if (engElem == "fire")  return "불";
+    if (engElem == "water") return "물";
+    if (engElem == "earth") return "흙";
+    if (engElem == "wind")  return "바람";
+    return "무";
+}
 
 int main() {
-    // 인코딩 설정
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 
-    Player player;  // 플레이어 객체 생성
-    initMap();       // 맵 무작위 생성
-    drawStartMap();  // 시작 위치 선택 화면 출력
+    Player player;
+    initMap();
+    while (true) {
+        showTitle();
+        int choice;
+        cin >> choice;
 
+        if (choice == 1) { showPrologue(); break; }
+        else if (choice == 2) { showExplan(); }
+    }
+
+
+
+    // 스타팅 원소 선택
+    cout << CLEAR;
+    cout << "\n";
+    cout << "========= [ 당신의 속성을 고르세요 ] =========\n\n";
+    cout << "  1. 불   2. 물   3. 흙   4. 바람\n\n";
+    cout << "선택 >> ";
+    int startElem;
+    cin >> startElem;
+    if (startElem == 1) player.slots[0] = "불";
+    else if (startElem == 2) player.slots[0] = "물";
+    else if (startElem == 3) player.slots[0] = "흙";
+    else                     player.slots[0] = "바람";
+
+    drawStartMap();
     char startInput;
     cin >> startInput;
-
     player.row = startInput - '1';
     player.col = 0;
 
-    // 메인 게임 루프
     while (true) {
         drawMap(player);
 
@@ -26,32 +58,26 @@ int main() {
         cin >> input;
 
         int newRow = player.row;
-        int newCol = player.col + 1; // 무조건 오른쪽으로 한 칸
+        int newCol = player.col + 1;
 
-        // 이동 방향 결정
-        if (input == '1') newRow = player.row - 1; // ↗ 우상
-        if (input == '2') newRow = player.row;      // → 우
-        if (input == '3') newRow = player.row + 1;  // ↘ 우하
+        if (input == '1') newRow = player.row - 1;
+        if (input == '2') newRow = player.row;
+        if (input == '3') newRow = player.row + 1;
 
-        // 맵 경계 체크
         if (newRow < 0 || newRow >= ROWS) {
             cout << "이동 불가!\n";
             continue;
         }
 
-        // 지나온 타일 표시 제거
         gameMap[player.row][player.col] = VISIT;
-
-        // 플레이어 위치 업데이트
         player.row = newRow;
         player.col = newCol;
 
         // 몬스터 타일
         if (gameMap[player.row][player.col] == MONSTER) {
-            int elem  = elementMap[player.row][player.col];
+            int elem = elementMap[player.row][player.col];
             int count = player.fightCount[elem];
 
-            // 전투 횟수에 따른 등급 결정 (없애셔도 됩니다)
             string grade;
             if (count == 0)
                 grade = "하급";
@@ -64,7 +90,6 @@ int main() {
 
             player.fightCount[elem]++;
 
-            // 속성 정수 → 문자열 변환 (JSON 로드용)
             string elemName;
             switch (elem) {
             case FIRE:  elemName = "fire";  break;
@@ -74,37 +99,112 @@ int main() {
             }
 
             Enemy enemy = loadEnemy(elemName, grade);
-            drawBattle(player, enemy);
 
-            // 현재는 전투 화면만 보여주고 아무 키나 누르면 넘어가는 상태
-            cin.get();
-            cin.get();
+            // 전리품 획득
+            string dropElem = translateElement(enemy.element);
+            string plus1 = dropElem + "+";
+            string plus2 = dropElem + "++";
+            bool handled = false;
 
-            // 전투 승리 후 원소 획득 처리 필요
-            // - 해당 타일의 속성 원소를 슬롯에 장착 또는 교체
-            // - 슬롯이 꽉 찬 경우 교체 선택 UI 호출
+            cout << CLEAR;
+            cout << "========= [ 전리품 획득 ] =========\n\n";
+
+            // 1. 이미 ++ 있으면 더 이상 진화 불가
+            for (int i = 0; i < 3; i++) {
+                if (player.slots[i] == plus2) {
+                    cout << ">> [" << plus2 << "] 속성은 더 이상 진화할 수 없습니다.\n";
+                    cout << ">> [" << dropElem << "] 원소가 흩어집니다...\n";
+                    handled = true;
+                    break;
+                }
+            }
+
+            // 2. + → ++ 업그레이드
+            if (!handled) {
+                for (int i = 0; i < 3; i++) {
+                    if (player.slots[i] == plus1) {
+                        player.slots[i] = plus2;
+                        cout << ">> [" << plus1 << "] 속성이 [" << plus2 << "] 로 최종 진화!\n";
+                        handled = true;
+                        break;
+                    }
+                }
+            }
+
+            // 3. 기본 → + 업그레이드
+            if (!handled) {
+                for (int i = 0; i < 3; i++) {
+                    if (player.slots[i] == dropElem) {
+                        player.slots[i] = plus1;
+                        cout << ">> [" << dropElem << "] 속성이 [" << plus1 << "] 로 진화!\n";
+                        handled = true;
+                        break;
+                    }
+                }
+            }
+
+            // 4. 빈 슬롯 채우기
+            if (!handled) {
+                for (int i = 0; i < 3; i++) {
+                    if (player.slots[i] == "") {
+                        player.slots[i] = dropElem;
+                        cout << ">> [" << dropElem << "] 원소를 새로 획득!\n";
+                        handled = true;
+                        break;
+                    }
+                }
+            }
+
+            // 5. 슬롯 꽉 찼을 때 교체
+            if (!handled) {
+                cout << ">> 슬롯이 가득 찼습니다! 새 원소: [" << dropElem << "]\n\n";
+                cout << "1: " << player.slots[0] << "  2: " << player.slots[1] << "  3: " << player.slots[2] << "\n";
+                cout << "교체할 슬롯 선택 (1~3, 0=포기) >> ";
+                int replaceIdx;
+                cin >> replaceIdx;
+                if (replaceIdx >= 1 && replaceIdx <= 3) {
+                    cout << "\n[" << player.slots[replaceIdx - 1] << "] 버리고 [" << dropElem << "] 장착\n";
+                    player.slots[replaceIdx - 1] = dropElem;
+                }
+                else {
+                    cout << "\n원소 획득 포기\n";
+                }
+            }
+
+            cout << "\n엔터를 누르면 맵으로 돌아갑니다...";
+            cin.get(); cin.get();
         }
 
         // 우물 타일
         if (gameMap[player.row][player.col] == WELL) {
-            // 우물 회복량 수치 구현
- 
+            player.hp = min(player.hp + 30, player.maxHp);
+            player.mp = min(player.mp + 20, player.maxMp);
+            showHeal(player);
         }
 
         // 보스 타일
         if (gameMap[player.row][player.col] == BOSS) {
             drawMap(player);
-            cout << "\n  보스 등장!\n";
-
-            // 보스 전투 연결 필요
-
-            cin.get();
+            cout << "\n  [시스템] 보스 등장!!\n";
+            Sleep(2000);
             break;
         }
     }
 
-    // 게임 클리어 // 게임오버 화면 구현 필요
+    // 엔딩
+    cout << CLEAR;
+    if (player.hp > 0) {
+        showEnd(player);
+    }
+    else {
+        cout << RED << BOLD;
+        cout << "\n\n  ====================================================\n";
+        cout << "                    게임 오버...\n";
+        cout << "  ====================================================\n\n" << CLR;
+        cout << "  쓰러지고 말았습니다. 다음에 다시 도전하세요!\n";
+    }
 
-    cin.get();
+    cout << "\n엔터를 누르면 게임을 종료합니다...";
+    cin.get(); cin.get();
     return 0;
 }

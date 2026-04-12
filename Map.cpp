@@ -91,11 +91,15 @@ void drawMap(Player& player) {
         // 스탯 패널
         if (r == 0) { cout << "     HP : "; drawHpBar(player.hp, player.maxHp); }
         if (r == 1) { cout << "     MP : "; drawHpBar(player.mp, player.maxMp); }
-        if (r == 2)   cout << "     [보유 원소]   1: 없음";
-        if (r == 3)   cout << "                   2: 없음";
-        if (r == 4)   cout << "                   3: 없음";
-
-        // 슬롯에 원소가 있을 때 "없음" 대신 원소 이름 표시 필요
+        if (r == 2) {
+            cout << "    [보유 원소]   1: " << (player.slots[0] == "" ? "비어있음" : player.slots[0]);
+        }
+        if (r == 3) {
+            cout << "                  2: " << (player.slots[1] == "" ? "비어있음" : player.slots[1]);
+        }
+        if (r == 4) {
+            cout << "                  3: " << (player.slots[2] == "" ? "비어있음" : player.slots[2]);
+        }
 
         cout << "\n";
 
