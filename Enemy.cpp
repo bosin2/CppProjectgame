@@ -1,4 +1,4 @@
-#include "Enemy.h"
+#include "Enemy.h" //jsonㅠ파싱함수
 
 Enemy loadEnemy(string element, string grade) {
     ifstream f("Enemy.json");

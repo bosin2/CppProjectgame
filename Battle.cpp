@@ -40,7 +40,22 @@ void drawBattle(Player& player, Enemy& enemy) {
     // 중앙 우측: 몬스터 아스키 아트
     for (int i = 0; i < (int)enemy.ascii.size(); i++) {
         gotoxy(7 + i, 55);
-        cout << enemy.ascii[i];
+        if (enemy.element == "fire") {
+            cout <<RED << enemy.ascii[i] << CLR;
+
+        }
+        else if (enemy.element == "water") {
+            cout <<BLUE<< enemy.ascii[i] << CLR;
+
+        }
+        else if (enemy.element == "earth") {
+            cout <<YELLOW<< enemy.ascii[i] << CLR;
+
+        }
+        else if (enemy.element == "wind") {
+            cout << GREEN<< enemy.ascii[i] << CLR;
+
+        }
     }
 
     // 전투 로그 출력 영역 추가 필요
@@ -62,5 +77,6 @@ void drawBattle(Player& player, Enemy& enemy) {
     // 하단: 입력
     gotoxy(21, 1); cout << "【  1: 원소 공격   2: 조합 공격   3: 방어 하기  】";
     gotoxy(22, 1); cout << "선택 ⇒ ";
+    cin.get();
 }
 

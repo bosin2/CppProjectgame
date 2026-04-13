@@ -29,21 +29,21 @@ int main() {
         else if (choice == 2) { showExplan(); }
     }
 
-
-
     // 스타팅 원소 선택
-    cout << CLEAR;
-    cout << "\n";
-    cout << "========= [ 당신의 속성을 고르세요 ] =========\n\n";
-    cout << "  1. 불   2. 물   3. 흙   4. 바람\n\n";
-    cout << "선택 >> ";
-    int startElem;
-    cin >> startElem;
-    if (startElem == 1) player.slots[0] = "불";
-    else if (startElem == 2) player.slots[0] = "물";
-    else if (startElem == 3) player.slots[0] = "흙";
-    else                     player.slots[0] = "바람";
+    while (true) {
+        startChoice();
+        int startElem;
+        cin >> startElem;
 
+        switch (startElem) {
+        case 1: player.slots[0] = "불";   break;
+        case 2: player.slots[0] = "물";   break;
+        case 3: player.slots[0] = "흙";   break;
+        case 4: player.slots[0] = "바람"; break;
+        default: continue;
+        }
+        break;
+    }
     drawStartMap();
     char startInput;
     cin >> startInput;
@@ -81,9 +81,9 @@ int main() {
             string grade;
             if (count == 0)
                 grade = "하급";
-            else if (count <= 2)
+            else if (count <= 1)
                 grade = (rand() % 2 == 0) ? "하급" : "중급";
-            else if (count <= 3)
+            else if (count <= 2)
                 grade = (rand() % 2 == 0) ? "중급" : "상급";
             else
                 grade = "상급";
@@ -97,8 +97,10 @@ int main() {
             case EARTH: elemName = "earth"; break;
             case WIND:  elemName = "wind";  break;
             }
-
             Enemy enemy = loadEnemy(elemName, grade);
+            drawBattle(player, enemy);
+            cin.ignore();
+            cin.get();
 
             // 전리품 획득
             string dropElem = translateElement(enemy.element);
@@ -172,13 +174,14 @@ int main() {
             }
 
             cout << "\n엔터를 누르면 맵으로 돌아갑니다...";
-            cin.get(); cin.get();
+            cin.get();
         }
 
         // 우물 타일
         if (gameMap[player.row][player.col] == WELL) {
             player.hp = min(player.hp + 30, player.maxHp);
             player.mp = min(player.mp + 20, player.maxMp);
+            cin.get();
             showHeal(player);
         }
 
@@ -186,7 +189,7 @@ int main() {
         if (gameMap[player.row][player.col] == BOSS) {
             drawMap(player);
             cout << "\n  [시스템] 보스 등장!!\n";
-            Sleep(2000);
+            cin.get();
             break;
         }
     }
@@ -194,17 +197,15 @@ int main() {
     // 엔딩
     cout << CLEAR;
     if (player.hp > 0) {
+        cin.get();
         showEnd(player);
     }
     else {
-        cout << RED << BOLD;
-        cout << "\n\n  ====================================================\n";
-        cout << "                    게임 오버...\n";
-        cout << "  ====================================================\n\n" << CLR;
-        cout << "  쓰러지고 말았습니다. 다음에 다시 도전하세요!\n";
+        cin.get();
+        showDie();
     }
 
     cout << "\n엔터를 누르면 게임을 종료합니다...";
-    cin.get(); cin.get();
+    cin.get();
     return 0;
 }
