@@ -284,7 +284,7 @@ void showEnd(Player& player) {
     drawScene(art4, art4Size, "슬라임 : ? )))");
     drawScene(art4, art4Size, "인간 B : 하하. 네가 세상을 구한거야.");
     drawScene(art4, art4Size, "인간 B : 음, 그래. 동상 이름은 슬라임 용사가 좋겠어. 너도 괜찮지 ?");
-    drawScene(art4, art4Size, "슬라임 : ^^ )))");
+    drawScene(art4, art4Size, "슬라임 : ,,⁃ ⩊ ⁃,,)))");
 
     // 최종 스탯 화면
     cout << CLEAR;

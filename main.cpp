@@ -98,9 +98,8 @@ int main() {
             case WIND:  elemName = "wind";  break;
             }
             Enemy enemy = loadEnemy(elemName, grade);
-            drawBattle(player, enemy);
-            cin.ignore();
-            cin.get();
+            bool isVictory = startBattle(player, enemy);
+            if (!isVictory) break;
 
             // 전리품 획득
             string dropElem = translateElement(enemy.element);

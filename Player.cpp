@@ -1,6 +1,5 @@
 #include "Player.h"
 #include "Define.h"
-#include "Battle.h"
 #include <iostream>
 
 void drawSlime(Player& player) {
@@ -15,8 +14,8 @@ void drawSlime(Player& player) {
     else if (player.slots[0].find("바람") != string::npos)
         color = GREEN;
 
-    gotoxy(8, 5); cout << color << "  .--." << CLR;
-    gotoxy(9, 5); cout << color << " ( .. )" << CLR;
-    gotoxy(10, 5); cout << color << "  '--'" << CLR;
+    gotoxy(10, 5); cout << color << "  .--." << CLR;
+    gotoxy(11, 5); cout << color << " ( .. )" << CLR;
+    gotoxy(12, 5); cout << color << "  '--'" << CLR;
 
 }

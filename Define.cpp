@@ -1,6 +1,11 @@
 #include <iostream>
 using namespace std;
 
+//콘솔커서이동시키는함수
+void gotoxy(int row, int col) {
+    printf("\x1b[%d;%dH", row, col);
+}
+
 void drawHpBar(int current, int max) {
     int filled = (current * 10) / max;
     cout << "[";

@@ -7,6 +7,9 @@
 
 using namespace std;
 
+// 콘솔 커서를 특정 위치(행, 열)로 이동시키는 함수
+void gotoxy(int row, int col);
+
 // 체력 바를 화면에 그리는 함수
 void drawHpBar(int current, int max);
 
