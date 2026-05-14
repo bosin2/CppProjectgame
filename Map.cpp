@@ -14,18 +14,18 @@ void initMap() {
     // 1. 전체 몬스터 타일 + 랜덤 속성 배정
     for (int r = 0; r < ROWS; r++) {
         for (int c = 0; c < COLS; c++) {
-            gameMap[r][c]    = MONSTER;
+            gameMap[r][c] = MONSTER;
             elementMap[r][c] = (rand() % 4) + 1;
         }
     }
 
     // 2. 우물 랜덤 배치
     int wellCount = 0;
-    while (wellCount < 5) {
+    while (wellCount < 20) {
         int r = rand() % ROWS;
         int c = rand() % (COLS - 2) + 1; // 첫열, 보스열 제외
         if (gameMap[r][c] != WELL) {
-            gameMap[r][c]    = WELL;
+            gameMap[r][c] = WELL;
             elementMap[r][c] = 0; // 우물은 속성 없음
             wellCount++;
         }
@@ -33,7 +33,7 @@ void initMap() {
 
     // 3. 마지막 열 보스 배치
     for (int r = 0; r < ROWS; r++) {
-        gameMap[r][COLS - 1]    = BOSS;
+        gameMap[r][COLS - 1] = BOSS;
         elementMap[r][COLS - 1] = 0;
     }
 
@@ -120,7 +120,7 @@ void drawMap(Player& player) {
                     case WIND:  cout << YB << "  " << CLR; break;
                     }
                     break;
-                case WELL:  cout << WB   << "  " << CLR; break;
+                case WELL:  cout << WB << "  " << CLR; break;
                 case BOSS:  cout << CYAN << "B " << CLR; break;
                 case VISIT: cout << "  ";                 break; // 지나온 타일 공백
                 }
@@ -134,11 +134,11 @@ void drawMap(Player& player) {
     for (int c = 1; c < COLS; c++) cout << "┻━━";
     cout << "┛\n\n";
 
-    cout << RED    << "  ■" << CLR << " 불  ";
-    cout << BLUE   << "  ■" << CLR << " 물  ";
-    cout << GREEN  << "  ■" << CLR << " 흙  ";
+    cout << RED << "  ■" << CLR << " 불  ";
+    cout << BLUE << "  ■" << CLR << " 물  ";
+    cout << GREEN << "  ■" << CLR << " 흙  ";
     cout << YELLOW << "  ■" << CLR << " 바람  ";
-    cout << WHITE  << "  ■" << CLR << " 우물\n";
+    cout << WHITE << "  ■" << CLR << " 우물\n";
 
     cout << "\n  이동:  1(↗)  2(→)  3(↘)\n";
 }

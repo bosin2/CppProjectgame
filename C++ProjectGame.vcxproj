@@ -138,6 +138,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Battle.h" />
+    <ClInclude Include="Boss.h" />
+    <ClInclude Include="Character.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Map.h" />

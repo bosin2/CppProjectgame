@@ -1,4 +1,5 @@
 #include "Enemy.h" //jsonㅠ파싱함수
+#include "Boss.h"
 
 Enemy loadEnemy(string element, string grade) {
     ifstream f("Enemy.json");
@@ -28,4 +29,32 @@ Enemy loadEnemy(string element, string grade) {
         }
     }
     return e;
+}
+
+Boss loadBoss() {
+    ifstream f("Enemy.json");
+    json data = json::parse(f);
+
+    Boss b;
+
+    auto& bossData = data["boss"][0];  // 첫 번째 보스 데이터
+
+    b.name = bossData["name"];
+    b.grade = bossData["grade"];
+    b.hp = bossData["hp"];
+    b.maxHp = bossData["hp"];
+    b.element = "all";
+
+    for (auto& line : bossData["ascii"])
+        b.ascii.push_back(line);
+
+    for (auto& p : bossData["patterns"]) {
+        Pattern pat;
+        pat.name = p["name"];
+        pat.damage = p["damage"];
+        pat.type = p["type"];
+        b.patterns.push_back(pat);
+    }
+
+    return b;
 }

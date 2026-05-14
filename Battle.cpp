@@ -1,4 +1,5 @@
 #include "Battle.h"
+#include "Boss.h"
 #include "Player.h"
 #include <iostream>
 #include <conio.h>
@@ -8,12 +9,10 @@ using namespace std;
 
 
 void enemyDie(Player& player, Enemy& enemy, string& msg) {
-    // 적 아스키아트 위치 공백으로 덮어쓰기
     for (int i = 0; i < (int)enemy.ascii.size(); i++) {
         gotoxy(8 + i, 55);
         cout << "                              ";
     }
-
     enemy.ascii.clear();
     msg = enemy.name + "(이)가 쓰러졌습니다 ! ⸜(⠀  ᐢ ᵕ ᐢ  )⸝‍";
     drawBattle(player, enemy, msg);
@@ -22,14 +21,12 @@ void enemyDie(Player& player, Enemy& enemy, string& msg) {
     cout << "전투 승리! ヽ(◍˃ᗜ˂◍)ﾉ (엔터를 누르면 계속...)";
 }
 
-//원소보유중인지확인
 bool hasElement(Player& p, string name) {
     for (int i = 0; i < 3; i++)
         if (p.slots[i].find(name) != string::npos) return true;
     return false;
 }
 
-//원소상성계산하는함수
 float elemCounter(string pSlot, string eElem) {
     bool pFire = (pSlot.find("불") != string::npos);
     bool pWater = (pSlot.find("물") != string::npos);
@@ -38,10 +35,8 @@ float elemCounter(string pSlot, string eElem) {
 
     if ((pFire && eElem == "earth") || (pEarth && eElem == "wind") ||
         (pWind && eElem == "water") || (pWater && eElem == "fire")) return 2.0f;
-
     if ((pEarth && eElem == "fire") || (pWind && eElem == "earth") ||
         (pWater && eElem == "wind") || (pFire && eElem == "water")) return 0.5f;
-
     return 1.0f;
 }
 
@@ -49,7 +44,6 @@ float elemCounter(string pSlot, string eElem) {
 void drawBattle(Player& player, Enemy& enemy, string currentMessage) {
     cout << CLEAR;
 
-    // 좌상단: 플레이어 상태창
     gotoxy(1, 1); cout << "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓";
     gotoxy(2, 1); cout << "┃ 슬라임                           ┃";
     gotoxy(3, 1); cout << "┃ HP: "; drawHpBar(player.hp, player.maxHp);
@@ -60,37 +54,33 @@ void drawBattle(Player& player, Enemy& enemy, string currentMessage) {
         << (player.slots[2] == "" ? "-" : player.slots[2]) << "]";
     gotoxy(6, 1); cout << "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
 
-    // 우상단: 몬스터 상태창
     gotoxy(1, 50); cout << "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓";
     gotoxy(2, 50); cout << "┃ <" << enemy.grade << " 정령> " << enemy.name;
     gotoxy(3, 50); cout << "┃";
     gotoxy(4, 50); cout << "┃ HP: "; drawHpBar(enemy.hp, enemy.maxHp);
     if (!enemy.patterns.empty()) {
         Pattern& nextPat = enemy.patterns[enemy.nextPattern];
-        gotoxy(5, 50); cout << "┃ " << nextPat.name <<"를 준비하고 있습니다." << "(" << nextPat.damage << ")";
+        gotoxy(5, 50); cout << "┃ " << nextPat.name << "를 준비하고 있습니다.(" << nextPat.damage << ")";
     }
     gotoxy(6, 50); cout << "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
 
-    // 중앙 좌측: 슬라임 아스키 아트
     drawSlime(player);
 
-    // 중앙 우측: 몬스터 아스키 아트 (원소별 색상)
     for (int i = 0; i < (int)enemy.ascii.size(); i++) {
         gotoxy(8 + i, 55);
         if (enemy.element == "fire")  cout << RED << enemy.ascii[i] << CLR;
         else if (enemy.element == "water") cout << BLUE << enemy.ascii[i] << CLR;
         else if (enemy.element == "earth") cout << YELLOW << enemy.ascii[i] << CLR;
         else if (enemy.element == "wind")  cout << GREEN << enemy.ascii[i] << CLR;
+        else                               cout << PINK << enemy.ascii[i] << CLR; // 보스(all)
     }
 
-    // 전투 로그
     gotoxy(15, 1); cout << "──────────────────────────────────────────────────────────────────────";
     gotoxy(16, 4); cout << ">> " << currentMessage;
     gotoxy(17, 1); cout << "──────────────────────────────────────────────────────────────────────";
 }
 
 void drawSkillMenu(Player& player, int mode) {
-    // 메뉴 영역 공백으로 초기화
     for (int row = 20; row <= 29; row++) {
         gotoxy(row, 1);
         cout << "                                                                        ";
@@ -156,17 +146,15 @@ bool startBattle(Player& player, Enemy& enemy) {
                     float multiplier = elemCounter(myElem, enemy.element);
                     int finalDmg = (int)(baseDmg * multiplier);
 
-                    // 회피 체크
                     if (enemy.isMiss && rand() % 2 == 0) {
                         msg = enemy.name + "이(가) 공격을 회피했다 !";
                     }
                     else {
-                        if (enemy.isDefending) finalDmg /= 2;
-                        enemy.hp -= finalDmg;
+                        enemy.takeDamage(finalDmg);
                         msg = "[" + myElem + "] 공격 !";
-                        if (multiplier > 1.0f) msg += "효과가 굉장했다 !! " + to_string(finalDmg) + "의 피해를 입혔다 ! (*>∇<)ﾉ";
-                        else if (multiplier < 1.0f) msg += "효과가 별로인 듯하다...( > ~ < )💦 " + to_string(finalDmg) + " 의 피해를 입혔다...";
-                        else                        msg += to_string(finalDmg) + "의 피해를 입혔다 ! ᐠ( ᐢ ᵕ ᐢ )ᐟ";
+                        if (multiplier > 1.0f) msg += " 효과가 굉장했다 !! " + to_string(finalDmg) + "의 피해를 입혔다 ! (*>∇<)ﾉ";
+                        else if (multiplier < 1.0f) msg += " 효과가 별로인 듯하다...( > ~ < )💦 " + to_string(finalDmg) + " 의 피해를 입혔다...";
+                        else                        msg += " " + to_string(finalDmg) + "의 피해를 입혔다 ! ᐠ( ᐢ ᵕ ᐢ )ᐟ";
                     }
                     enemy.isMiss = false;
                     enemy.isDefending = false;
@@ -187,7 +175,7 @@ bool startBattle(Player& player, Enemy& enemy) {
                 if (ult == 0) continue;
 
                 bool possible = false;
-                int finalDmg = 0;
+                int  finalDmg = 0;
                 string skillName = "";
 
                 if (ult == 1 && hasElement(player, "불") && hasElement(player, "물")) { possible = true; skillName = "증기 폭발"; finalDmg = 45; }
@@ -198,16 +186,13 @@ bool startBattle(Player& player, Enemy& enemy) {
                 else if (ult == 6 && hasElement(player, "흙") && hasElement(player, "바람")) { possible = true; skillName = "모래 폭풍"; finalDmg = 42; }
 
                 if (possible) {
-                    // 회피 체크
                     if (enemy.isMiss && rand() % 2 == 0) {
                         msg = enemy.name + "이(가) 공격을 회피했다 ! Σ(； ･`д･´)";
                     }
                     else {
-                        if (enemy.isDefending) finalDmg /= 2;
                         player.mp -= 3;
-                        enemy.hp -= finalDmg;
-                        msg = skillName + " 시전 !! "+ enemy.name + "에게 " + to_string(finalDmg) + "의 피해 ! (*>∇<)ﾉ";
-
+                        enemy.takeDamage(finalDmg);
+                        msg = skillName + " 시전 !! " + enemy.name + "에게 " + to_string(finalDmg) + "의 피해 ! (*>∇<)ﾉ";
                     }
                     enemy.isMiss = false;
                     enemy.isDefending = false;
@@ -221,12 +206,11 @@ bool startBattle(Player& player, Enemy& enemy) {
             }
         }
         else if (choice == 3) {
-            player.isDefending = true;
+            player.defend();
             msg = "방어 자세를 취했습니다. 입는 데미지가 줄어듭니다. (･`_´･ )";
         }
         else continue;
 
-        // 몬스터 사망 체크
         if (enemy.hp <= 0) {
             enemy.hp = 0;
             enemyDie(player, enemy, msg);
@@ -244,19 +228,14 @@ bool startBattle(Player& player, Enemy& enemy) {
 
         if (mTurn.type == "attack") {
             int dmg = mTurn.damage;
-            if (player.isDefending) {
-                dmg /= 2;
-                msg = enemy.name + "이(가) [" + mTurn.name + "]을(를) 사용했습니다 ! (방어 성공 ! " + to_string(dmg) + " 피해)";
-            }
-            else {
+            player.takeDamage(dmg);
+            if (player.isDefending)
+                msg = enemy.name + "이(가) [" + mTurn.name + "]을(를) 사용했습니다 ! (방어 성공 ! " + to_string(dmg / 2) + " 피해)";
+            else
                 msg = enemy.name + "이(가) [" + mTurn.name + "]을(를) 사용했습니다 ! (" + to_string(dmg) + " 피해)";
-            }
-            player.hp -= dmg;
-            if (player.hp < 0) player.hp = 0;
         }
         else if (mTurn.type == "defend") {
-
-            enemy.isDefending = true;
+            enemy.defend();
             msg = enemy.name + "이(가) 방어 자세를 취했습니다 !";
         }
         else if (mTurn.type == "heal") {
@@ -269,11 +248,9 @@ bool startBattle(Player& player, Enemy& enemy) {
             msg = enemy.name + "이(가) 몸을 날렵하게 했습니다 !";
         }
 
-        // 턴 끝 초기화
         player.isDefending = false;
         enemy.nextPattern = rand() % enemy.patterns.size();
 
-        // 플레이어 사망 체크
         if (player.hp <= 0) {
             player.hp = 0;
             drawBattle(player, enemy, enemy.name + "에게 쓰러졌습니다...");
@@ -284,4 +261,128 @@ bool startBattle(Player& player, Enemy& enemy) {
     }
 
     return (player.hp > 0);
+}
+
+// ================================================
+// 보스 전투 로직
+// Enemy를 상속받은 Boss를 Enemy& 로 받아 drawBattle 재사용
+// ================================================
+bool startBossBattle(Player& player, Boss& boss) {
+    boss.nextPattern = 0;
+    string msg = "";
+
+    while (player.isAlive() && boss.isAlive()) {
+
+        drawBattle(player, boss, msg);
+        drawSkillMenu(player, 0);
+        int choice;
+        cin >> choice;
+
+        // ── 플레이어 턴 ──
+        if (choice == 1) {
+            if (player.mp >= 1) {
+                drawSkillMenu(player, 1);
+                int sel; cin >> sel;
+                if (sel == 0) continue;
+                int idx = sel - 1;
+
+                if (idx >= 0 && idx < 3 && player.slots[idx] != "") {
+                    player.mp -= 1;
+                    string myElem = player.slots[idx];
+
+                    int baseDmg = 20;
+                    if (myElem.find("++") != string::npos) baseDmg = 40;
+                    else if (myElem.find("+") != string::npos) baseDmg = 30;
+
+                    boss.takeDamage(baseDmg);
+                    msg = "[" + myElem + "] 공격 ! " + to_string(baseDmg) + "의 피해 ! ᐠ( ᐢ ᵕ ᐢ )ᐟ";
+                    boss.isDefending = false;
+                }
+                else {
+                    msg = "비어있는 슬롯입니다.";
+                }
+            }
+            else {
+                msg = "마나가 부족합니다.";
+            }
+        }
+        else if (choice == 2) {
+            if (player.mp >= 3) {
+                drawSkillMenu(player, 2);
+                int ult; cin >> ult;
+                if (ult == 0) continue;
+
+                bool possible = false;
+                int  finalDmg = 0;
+                string skillName = "";
+
+                if (ult == 1 && hasElement(player, "불") && hasElement(player, "물")) { possible = true; skillName = "증기 폭발"; finalDmg = 45; }
+                else if (ult == 2 && hasElement(player, "불") && hasElement(player, "흙")) { possible = true; skillName = "용암 투척"; finalDmg = 50; }
+                else if (ult == 3 && hasElement(player, "불") && hasElement(player, "바람")) { possible = true; skillName = "화염 돌풍"; finalDmg = 55; }
+                else if (ult == 4 && hasElement(player, "물") && hasElement(player, "흙")) { possible = true; skillName = "진흙 늪";   finalDmg = 40; }
+                else if (ult == 5 && hasElement(player, "물") && hasElement(player, "바람")) { possible = true; skillName = "빙결 화살"; finalDmg = 48; }
+                else if (ult == 6 && hasElement(player, "흙") && hasElement(player, "바람")) { possible = true; skillName = "모래 폭풍"; finalDmg = 42; }
+
+                if (possible) {
+                    player.mp -= 3;
+                    boss.takeDamage(finalDmg);
+                    msg = skillName + " 시전 !! 보스에게 " + to_string(finalDmg) + "의 피해 ! (*>∇<)ﾉ";
+                    boss.isDefending = false;
+                }
+                else {
+                    msg = "원소가 부족하거나 잘못된 선택입니다.";
+                }
+            }
+            else {
+                msg = "마나가 부족합니다. (필요 MP: 3)";
+            }
+        }
+        else if (choice == 3) {
+            player.defend();
+            msg = "방어 자세를 취했습니다. (･`_´･ )";
+        }
+        else continue;
+
+        // 보스 사망 체크
+        if (!boss.isAlive()) {
+            boss.hp = 0;
+            //boss.ascii.clear();
+            //msg = 대사 
+            // 신 전환 및 아스키 
+            cin.get();
+            break;
+        }
+
+        drawBattle(player, boss, msg);
+        drawSkillMenu(player, 0);
+        Sleep(3000);
+
+        // ── 보스 턴 ──
+        Pattern& bTurn = boss.patterns[boss.nextPattern];
+
+        if (bTurn.type == "attack") {
+            int dmg = bTurn.damage;
+            player.takeDamage(dmg);
+            if (player.isDefending) //보스 이름 들어가야함 
+                msg = "보스 이름 [" + bTurn.name + "] ! (방어 성공 ! " + to_string(dmg / 2) + " 피해)";
+            else
+                msg = "보스 이름 [" + bTurn.name + "] 을(를) 사용했다 ! (" + to_string(dmg) + " 피해)";
+        }
+        else if (bTurn.type == "defend") {
+            boss.defend();
+            //msg = " "; 방어 대사 
+        }
+
+        player.isDefending = false;
+        boss.nextPattern = rand() % boss.patterns.size();
+
+        if (!player.isAlive()) {
+            player.hp = 0;
+            drawBattle(player, boss, "보스 에게 쓰러졌습니다...");// 보스이름 들어가야함 
+            Sleep(2000);
+            break;
+        }
+    }
+
+    return player.isAlive();
 }

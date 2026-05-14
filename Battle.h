@@ -2,6 +2,7 @@
 #include "Define.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Boss.h"
 #include <string> 
 
 
@@ -11,3 +12,6 @@ void drawSkillMenu(Player& player, int mode);
 
 // 전투 루프 전체를 관리하는 함수
 bool startBattle(Player& player, Enemy& enemy);
+
+//보스 전투 실제 데이터를 바꿀 때는 & 사용 
+bool startBossBatle(Player& player, Boss& boss);

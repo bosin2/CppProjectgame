@@ -1,6 +1,7 @@
 #include <windows.h>
 #include "Map.h"
 #include "Battle.h"
+#include "Boss.h"
 #include "Scene.h"
 #include "Player.h"
 #include <iostream>
@@ -49,7 +50,6 @@ int main() {
     cin >> startInput;
     player.row = startInput - '1';
     player.col = 0;
-
     while (true) {
         drawMap(player);
 
@@ -189,7 +189,13 @@ int main() {
             drawMap(player);
             cout << "\n  [시스템] 보스 등장!!\n";
             cin.get();
-            break;
+
+            Boss boss = loadBoss();
+            bool bossVictory = startBossBattle(player, boss);
+
+            if (!bossVictory)
+                break; //보스 클리어 못할시 빠져나오기 showDie로   
+            break;//클리어시 엔딩 
         }
     }
 

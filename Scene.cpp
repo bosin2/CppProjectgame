@@ -171,7 +171,7 @@ void startChoice() {
     cout << "\n\n";
 
     cout << "======= 당신의 속성을 선택하세요 =======\n\n";
-    cout << "  1. 불 " << RED <<"██" << CLR <<"  2. 물 " << BLUE << "██"<< CLR << "  3. 흙 " << YELLOW << "██"<< CLR << "  4. 바람 " << GREEN <<" ██"<< CLR << "\n\n\n\n";
+    cout << "  1. 불 " << RED << "██" << CLR << "  2. 물 " << BLUE << "██" << CLR << "  3. 흙 " << YELLOW << "██" << CLR << "  4. 바람 " << GREEN << " ██" << CLR << "\n\n\n\n";
     cout << "➤ ";
 }
 void showHeal(Player& player) {
