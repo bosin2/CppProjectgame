@@ -42,9 +42,12 @@ void showTitle() {
     cout << "          88.d8P8.d8P  88.  .88 88       88       88 88.  .88 88       \n";
     cout << "          8888' Y88'   `88888P8 dP       dP       dP `88888P' dP       \n";
     cout << "          ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo\n";
-    cout << "\n\n\n\n\n";
-    cout << "                  시작하기 \n";
-    cout << "                  설명보기 \n\n\n";
+    cout << "\n\n\n\n";
+    cout << "          ╔═══════════════════╗\n";
+    cout << "          ║" << BOLD << "   ▶  시작하기     " << CLR << "║\n";
+    cout << "          ╠═══════════════════╣\n";
+    cout << "          ║" << BOLD << "   ▶  설명보기     " << CLR << "║\n";
+    cout << "          ╚═══════════════════╝\n\n";
 }
 
 void showPrologue() {
@@ -65,7 +68,6 @@ void showPrologue() {
     };
     int art1Size = sizeof(art1) / sizeof(art1[0]);
     drawScene(art1, art1Size, "인간 A : 흠, 요즘 정령들이 심상치 않은거같아. 너무 난폭해졌달까?.");
-    drawScene(art1, art1Size, "인간 A : 흠, 요즘 정령들이 심상치 않은거같아. 너무 난폭해졌달까?.");
     drawScene(art1, art1Size, "인간 B : 음... 계속 이 상태면 정말 큰일 날지도.");
     drawScene(art1, art1Size, "인간 A : 왜 ? ");
 
@@ -73,7 +75,7 @@ void showPrologue() {
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢸⣿⠟⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
-    "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ាក⠃⢈⣯⠀⣹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+    "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ ⠃⢈⣯⠀⣹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀⢨⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣏⠀⠀⠀⠀⣹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢸⣿⠄⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
@@ -131,9 +133,6 @@ void showPrologue() {
     drawScene(art4, art4Size, "인간 A : B, 봐봐 저거 슬라임 아니야 ?");
     drawScene(art4, art4Size, "인간 B : 슬라임 ? 설마... 들어간 건가 ?");
 }
-// 게임 설명 화면 (미구현)
-void showExplan() {
-
 // 설명창
 void showExplan() {
     cout << CLEAR;
@@ -173,8 +172,10 @@ void startChoice() {
     for (int i = 0; i < 50; i++) cout << "─";
     cout << "\n\n";
 
-    cout << "======= 당신의 속성을 선택하세요 (해당 원소를 클릭하세요) =======\n\n";
-    cout << "  [ 불 ] " << RED << "██" << CLR << "   [ 물 ] " << BLUE << "██" << CLR << "   [ 흙 ] " << YELLOW << "██" << CLR << "   [ 바람 ] " << GREEN << " ██" << CLR << "\n\n\n\n";
+    cout << "=========  속성을 선택하세요 (박스를 클릭)  =========\n\n";
+    cout << "  ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐\n";
+    cout << "  │" << RB << BOLD << "  불  ██  " << CLR << "│    │" << BB << BOLD << "  물  ██  " << CLR << "│    │" << YB << BOLD << "  흙  ██  " << CLR << "│    │" << GB << BOLD << "  바람 ██ " << CLR << "│\n";
+    cout << "  └──────────┘    └──────────┘    └──────────┘    └──────────┘\n\n";
 }
 
 void showHeal(Player& player) {
@@ -219,8 +220,6 @@ void showEnd(Player& player) {
     "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠈⠉⠉⠉⠉⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
     };
     int art1Size = sizeof(art1) / sizeof(art1[0]);
-    drawScene(art1, art1Size, "당신은 모든 전투를 마치고 탑에서 걸어나왔습니다.");
-    drawScene(art1, art1Size, "당신은 모든 전투를 마치고 탑에서 걸어나왔습니다.");
     drawScene(art1, art1Size, "당신은 모든 전투를 마치고 탑에서 걸어나왔습니다.");
 
 
@@ -327,7 +326,6 @@ void showDie() {
     };
     int art1Size = sizeof(art1) / sizeof(art1[0]);
     drawScene(art1, art1Size, "당신은 전투에서 죽고 말았습니다.");
-    drawScene(art1, art1Size, "당신은 전투에서 죽고 말았습니다.");
 
     string art2[] = {
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
@@ -371,7 +369,6 @@ void showDie() {
     cout << "\n\n  ====================================================\n";
     cout << "                    게임 오버...\n";
     cout << "  ====================================================\n\n" << CLR;
-    cout << "  ➤ 아무 곳이나 클릭하면 메인 화면으로 돌아갑니다. ";
     
     waitAnyClick(); // 마우스 클릭 대기
 }

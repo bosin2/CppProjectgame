@@ -13,7 +13,7 @@ void drawArtAt(int row, int col, vector<string>& ascii, const char* color);     
 void shakeArt(int row, int col, vector<string>& ascii, const char* color,
     vector<int> offsets = { 2, -2, 1, -1 }, int frameDelay = 60);                // 아스키아트 좌우 흔들기
 void moveArt(int row, int startCol, int endCol, vector<string>& ascii,
-    const char* color, int speed = 30);                                           // 아스키아트 수평 이동
+    const char* color, int speed, const char* color2 = nullptr);                                  // 아스키아트 수평 이동
 
 vector<string> getProjectile(string slotName);       // 슬롯명으로 발사체 아트 반환
 const char* getElemColor(string slotName);           // 슬롯명으로 원소 색상 반환

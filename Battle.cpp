@@ -6,6 +6,7 @@
 #include <iostream>
 #include <conio.h>
 #include <string>
+#include <stdexcept>
 #include <windows.h>
 using namespace std;
 
@@ -87,38 +88,41 @@ void drawSkillMenu(Player& player, int mode) {
         cout << "                                                                        ";
     }
     if (mode == 0) {
-        gotoxy(19, 1); cout << "┏━━━━━━━━━━━━━━━━━━━━━━━━━━┓";
-        gotoxy(20, 1); cout << "┃         원소 공격        ┃";
-        gotoxy(21, 1); cout << "┃         조합 공격        ┃";
-        gotoxy(22, 1); cout << "┃         방어 하기        ┃";
-        gotoxy(23, 1); cout << "┗━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
-        gotoxy(27, 1); cout << "해당 메뉴를 클릭하세요  ";
+        gotoxy(19, 1); cout << "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓";
+        gotoxy(20, 1); cout << "┃  " << YELLOW << BOLD << "▶  원소 공격   (MP:  1)" << CLR << "          ┃";
+        gotoxy(21, 1); cout << "┃  " << CYAN   << BOLD << "▶  조합 공격   (MP:  3)" << CLR << "          ┃";
+        gotoxy(22, 1); cout << "┃  " << GREEN  << BOLD << "▶  방어 하기             " << CLR << "        ┃";
+        gotoxy(23, 1); cout << "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
+        gotoxy(25, 1); cout << "  [ 원하는 행동을 클릭하세요 ]          ";
     }
     else if (mode == 1) {
         gotoxy(19, 1); cout << "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓";
-        gotoxy(20, 1); cout << "┃ [ 원소 공격 목록 (MP 1) ]            ┃";
-        gotoxy(21, 1); cout << "┃ [" << (player.slots[0] == "" ? "-" : player.slots[0]) << "]";
-        gotoxy(22, 1); cout << "┃ [" << (player.slots[1] == "" ? "-" : player.slots[1]) << "]";
-        gotoxy(23, 1); cout << "┃ [" << (player.slots[2] == "" ? "-" : player.slots[2]) << "]";
+        gotoxy(20, 1); cout << "┃   " << BOLD << "[ 원소 공격 목록  (MP: 1) ]" << CLR << "          ┃";
+        gotoxy(21, 1); cout << "┃  " << YELLOW << "▶ [1] " << CLR << (player.slots[0] == "" ? "비어있음" : player.slots[0]) << "                                  ";
+        gotoxy(22, 1); cout << "┃  " << YELLOW << "▶ [2] " << CLR << (player.slots[1] == "" ? "비어있음" : player.slots[1]) << "                                  ";
+        gotoxy(23, 1); cout << "┃  " << YELLOW << "▶ [3] " << CLR << (player.slots[2] == "" ? "비어있음" : player.slots[2]) << "                                  ";
         gotoxy(24, 1); cout << "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
-        gotoxy(27, 1); cout << "슬롯 클릭 (화면 바깥 클릭 시 뒤로) ⇒ ";
+        gotoxy(25, 1); cout << "  [ 슬롯 클릭 / 박스 밖 클릭 = 뒤로 ]   ";
     }
     else if (mode == 2) {
-        gotoxy(19, 1); cout << "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓";
-        gotoxy(20, 1); cout << "┃ [ 조합 공격 목록 (MP 3) ]            ┃";
-        gotoxy(21, 1); cout << "┃ " << (hasElement(player, "불") && hasElement(player, "물") ? "증기 폭발 (불+물)  " : "[조합 잠금]        ") << "               ┃";
-        gotoxy(22, 1); cout << "┃ " << (hasElement(player, "불") && hasElement(player, "흙") ? "용암 투척 (불+흙)  " : "[조합 잠금]        ") << "               ┃";
-        gotoxy(23, 1); cout << "┃ " << (hasElement(player, "불") && hasElement(player, "바람") ? "화염 돌풍 (불+바람)" : "[조합 잠금]        ") << "               ┃";
-        gotoxy(24, 1); cout << "┃ " << (hasElement(player, "물") && hasElement(player, "흙") ? "진흙 늪   (물+흙)  " : "[조합 잠금]        ") << "               ┃";
-        gotoxy(25, 1); cout << "┃ " << (hasElement(player, "물") && hasElement(player, "바람") ? "빙결 화살 (물+바람)" : "[조합 잠금]        ") << "               ┃";
-        gotoxy(26, 1); cout << "┃ " << (hasElement(player, "흙") && hasElement(player, "바람") ? "모래 폭풍 (흙+바람)" : "[조합 잠금]        ") << "               ┃";
-        gotoxy(27, 1); cout << "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
-        gotoxy(28, 1); cout << "조합 번호 클릭 (화면 바깥 클릭 시 뒤로) ⇒ ";
+        gotoxy(19, 1); cout << "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓";
+        gotoxy(20, 1); cout << "┃   " << BOLD << "[ 조합 공격 목록  (MP: 3) ]" << CLR << "             ┃";
+        gotoxy(21, 1); cout << "┃  " << (hasElement(player, "불") && hasElement(player, "물") ? string(CYAN) + "▶ [1] 증기 폭발 (불+물)  " + CLR : string(WHITE) + "  [1] [잠금]          " + CLR) << "               ┃";
+        gotoxy(22, 1); cout << "┃  " << (hasElement(player, "불") && hasElement(player, "흙") ? string(CYAN) + "▶ [2] 용암 투척 (불+흙)  " + CLR : string(WHITE) + "  [2] [잠금]          " + CLR) << "               ┃";
+        gotoxy(23, 1); cout << "┃  " << (hasElement(player, "불") && hasElement(player, "바람") ? string(CYAN) + "▶ [3] 화염 돌풍 (불+바람)" + CLR : string(WHITE) + "  [3] [잠금]          " + CLR) << "               ┃";
+        gotoxy(24, 1); cout << "┃  " << (hasElement(player, "물") && hasElement(player, "흙") ? string(CYAN) + "▶ [4] 진흙 늪   (물+흙)  " + CLR : string(WHITE) + "  [4] [잠금]          " + CLR) << "               ┃";
+        gotoxy(25, 1); cout << "┃  " << (hasElement(player, "물") && hasElement(player, "바람") ? string(CYAN) + "▶ [5] 빙결 화살 (물+바람)" + CLR : string(WHITE) + "  [5] [잠금]          " + CLR) << "               ┃";
+        gotoxy(26, 1); cout << "┃  " << (hasElement(player, "흙") && hasElement(player, "바람") ? string(CYAN) + "▶ [6] 모래 폭풍 (흙+바람)" + CLR : string(WHITE) + "  [6] [잠금]          " + CLR) << "               ┃";
+        gotoxy(27, 1); cout << "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
+        gotoxy(28, 1); cout << "  [ 번호 클릭 / 박스 밖 클릭 = 뒤로 ]     ";
     }
 }
 
 // ── 전투 로직 ──
 bool startBattle(Player& player, Enemy& enemy) {
+    if (enemy.patterns.empty()) {
+        throw runtime_error("전투를 시작할 수 없습니다: 몬스터 패턴이 비어 있습니다.");
+    }
     enemy.nextPattern = rand() % enemy.patterns.size();
     string msg = enemy.name + "(이)가 나타났습니다 !";
 
@@ -167,12 +171,15 @@ bool startBattle(Player& player, Enemy& enemy) {
                     }
                     else {
                         animProjectile(player, myElem);
+                        bool enemyWasDefending = enemy.isDefending;
                         enemy.takeDamage(finalDmg);
+                        int dealtDmg = enemyWasDefending ? finalDmg / 2 : finalDmg;
                         animEnemyHit(enemy);
                         msg = "[" + myElem + "] 공격 !";
-                        if (multiplier > 1.0f) msg += " 효과가 굉장했다 !! " + to_string(finalDmg) + "의 피해를 입혔다 ! (*>∇<)ﾉ";
-                        else if (multiplier < 1.0f) msg += " 효과가 별로인 듯하다...( > ~ < )💦 " + to_string(finalDmg) + " 의 피해를 입혔다...";
-                        else                        msg += " " + to_string(finalDmg) + "의 피해를 입혔다 ! ᐠ( ᐢ ᵕ ᐢ )ᐟ";
+                        if (enemyWasDefending) msg += " 방어 중인 적에게 ";
+                        if (multiplier > 1.0f) msg += " 효과가 굉장했다 !! " + to_string(dealtDmg) + "의 피해를 입혔다 ! (*>∇<)ﾉ";
+                        else if (multiplier < 1.0f) msg += " 효과가 별로인 듯하다...( > ~ < ) " + to_string(dealtDmg) + " 의 피해를 입혔다...";
+                        else                        msg += " " + to_string(dealtDmg) + "의 피해를 입혔다 ! ᐠ( ᐢ ᵕ ᐢ )ᐟ";
                     }
                     enemy.isMiss = false;
                     enemy.isDefending = false;
@@ -215,15 +222,17 @@ bool startBattle(Player& player, Enemy& enemy) {
                 else if (ult == 6 && hasElement(player, "흙") && hasElement(player, "바람")) { possible = true; skillName = "모래 폭풍"; finalDmg = 42; }
 
                 if (possible) {
+                    player.mp -= 3;
                     if (enemy.isMiss && rand() % 2 == 0) {
                         msg = enemy.name + "이(가) 공격을 회피했다 ! Σ(； ･`д･´)";
                     }
                     else {
                         animComboAttack(player, skillName);
-                        player.mp -= 3;
+                        bool enemyWasDefending = enemy.isDefending;
                         enemy.takeDamage(finalDmg);
+                        int dealtDmg = enemyWasDefending ? finalDmg / 2 : finalDmg;
                         animEnemyHit(enemy);
-                        msg = skillName + " 시전 !! " + enemy.name + "에게 " + to_string(finalDmg) + "의 피해 ! (*>∇<)ﾉ";
+                        msg = skillName + " 시전 !! " + enemy.name + "에게 " + to_string(dealtDmg) + "의 피해 ! (*>∇<)ﾉ";
                     }
                     enemy.isMiss = false;
                     enemy.isDefending = false;
@@ -299,11 +308,10 @@ bool startBattle(Player& player, Enemy& enemy) {
     return (player.hp > 0);
 }
 
-// 보스 전투 로직 (Boss는 Enemy& 로 drawBattle 재사용)
-// ================================================
-// 보스 전투 로직
-// ================================================
 bool startBossBattle(Player& player, Boss& boss) {
+    if (boss.patterns.empty()) {
+        throw runtime_error("보스전을 시작할 수 없습니다: 보스 패턴이 비어 있습니다.");
+    }
     boss.nextPattern = 0;
     string msg = "";
 
@@ -325,8 +333,7 @@ bool startBossBattle(Player& player, Boss& boss) {
         if (choice == 1) {
             if (player.mp >= 1) {
                 drawSkillMenu(player, 1);
-                
-                
+
                 int sel = -1;
                 while (sel == -1) {
                     COORD pos = getMouseClick();
@@ -347,8 +354,12 @@ bool startBossBattle(Player& player, Boss& boss) {
                     if (myElem.find("++") != string::npos) baseDmg = 40;
                     else if (myElem.find("+") != string::npos) baseDmg = 30;
 
+                    animProjectile(player, myElem);
+                    bool bossWasDefending = boss.isDefending;
                     boss.takeDamage(baseDmg);
-                    msg = "[" + myElem + "] 공격 ! " + to_string(baseDmg) + "의 피해 ! ᐠ( ᐢ ᵕ ᐢ )ᐟ";
+                    int dealtDmg = bossWasDefending ? baseDmg / 2 : baseDmg;
+                    animEnemyHit(boss);
+                    msg = "[" + myElem + "] 공격 ! " + to_string(dealtDmg) + "의 피해 ! ᐠ( ᐢ ᵕ ᐢ )ᐟ";
                     boss.isDefending = false;
                 }
                 else {
@@ -362,8 +373,7 @@ bool startBossBattle(Player& player, Boss& boss) {
         else if (choice == 2) {
             if (player.mp >= 3) {
                 drawSkillMenu(player, 2);
-                
-               
+
                 int ult = -1;
                 while (ult == -1) {
                     COORD pos = getMouseClick();
@@ -390,9 +400,13 @@ bool startBossBattle(Player& player, Boss& boss) {
                 else if (ult == 6 && hasElement(player, "흙") && hasElement(player, "바람")) { possible = true; skillName = "모래 폭풍"; finalDmg = 42; }
 
                 if (possible) {
+                    animComboAttack(player, skillName);
                     player.mp -= 3;
+                    bool bossWasDefending = boss.isDefending;
                     boss.takeDamage(finalDmg);
-                    msg = skillName + " 시전 !! 보스에게 " + to_string(finalDmg) + "의 피해 ! (*>∇<)ﾉ";
+                    int dealtDmg = bossWasDefending ? finalDmg / 2 : finalDmg;
+                    animEnemyHit(boss);
+                    msg = skillName + " 시전 !! 보스에게 " + to_string(dealtDmg) + "의 피해 ! (*>∇<)ﾉ";
                     boss.isDefending = false;
                 }
                 else {
@@ -405,6 +419,7 @@ bool startBossBattle(Player& player, Boss& boss) {
         }
         else if (choice == 3) {
             player.defend();
+            animSlimeDefend(player);
             msg = "방어 자세를 취했습니다. (･`_´･ )";
         }
         else continue;
@@ -412,8 +427,14 @@ bool startBossBattle(Player& player, Boss& boss) {
         // 보스 사망 체크
         if (!boss.isAlive()) {
             boss.hp = 0;
-            cin.get();
-            waitAnyClick(); 
+            animEnemyDie(boss);
+            boss.ascii.clear();
+            msg = boss.name + "(이)가 쓰러졌습니다 ! ⸜( ᐢ ᵕ ᐢ )⸝";
+            drawBattle(player, boss, msg);
+            drawSkillMenu(player, 0);
+            gotoxy(29, 1);
+            cout << "전투 승리! ヽ(◍˃ᗜ˂◍)ﾉ (아무 곳이나 클릭하면 계속...)";
+            waitAnyClick();
             break;
         }
 
@@ -425,16 +446,30 @@ bool startBossBattle(Player& player, Boss& boss) {
         Pattern& bTurn = boss.patterns[boss.nextPattern];
 
         if (bTurn.type == "attack") {
+            animEnemyAttack(boss);
             int dmg = bTurn.damage;
             player.takeDamage(dmg);
+            animSlimeHit(player);
             if (player.isDefending)
-            if (player.isDefending) 
-                msg = "보스 이름 [" + bTurn.name + "] ! (방어 성공 ! " + to_string(dmg / 2) + " 피해)";
+                msg = boss.name + "이(가) [" + bTurn.name + "] ! (방어 성공 ! " + to_string(dmg / 2) + " 피해)";
             else
-                msg = "보스 이름 [" + bTurn.name + "] 을(를) 사용했다 ! (" + to_string(dmg) + " 피해)";
+                msg = boss.name + "이(가) [" + bTurn.name + "] 을(를) 사용했다 ! (" + to_string(dmg) + " 피해)";
         }
         else if (bTurn.type == "defend") {
+            animEnemyDefend(boss);
             boss.defend();
+            msg = boss.name + "이(가) 방어 자세를 취했습니다 !";
+        }
+        else if (bTurn.type == "heal") {
+            animEnemyHeal(boss);
+            int heal = bTurn.damage;
+            boss.hp = min(boss.hp + heal, boss.maxHp);
+            msg = boss.name + "이(가) 체력을 회복했습니다 ! (+" + to_string(heal) + ")";
+        }
+        else if (bTurn.type == "buff") {
+            animEnemyBuff(boss);
+            boss.isMiss = true;
+            msg = boss.name + "이(가) 몸을 날렵하게 했습니다 !";
         }
 
         player.isDefending = false;
@@ -442,8 +477,8 @@ bool startBossBattle(Player& player, Boss& boss) {
 
         if (!player.isAlive()) {
             player.hp = 0;
-            drawBattle(player, boss, "보스 에게 쓰러졌습니다...");
-            drawBattle(player, boss, "보스 에게 쓰러졌습니다..."); 
+            drawBattle(player, boss, boss.name + "에게 쓰러졌습니다...");
+            drawSkillMenu(player, 0);
             Sleep(2000);
             break;
         }

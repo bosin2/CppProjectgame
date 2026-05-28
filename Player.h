@@ -1,5 +1,5 @@
 #pragma once
-#include "character.h"
+#include "Character.h"
 #include "Define.h"
 #include <string>
 #include <vector>
@@ -33,5 +33,4 @@ public:
     int fightCount[5] = { 0, 0, 0, 0, 0 };  // 속성별 전투 횟수 (등급 결정용, 인덱스=Element 열거형)
 };
 
-// 슬롯 1번 원소 색으로 슬라임 아스키아트 출력
 void drawSlime(Player& player);

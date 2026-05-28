@@ -2,21 +2,9 @@
 #include "Define.h"
 #include <iostream>
 
-// 슬롯 1번 원소 색으로 슬라임 아스키아트 출력
 void drawSlime(Player& player) {
-    const char* color = CLR;
-
-    if (player.slots[0].find("불") != string::npos)
-        color = RED;
-    else if (player.slots[0].find("물") != string::npos)
-        color = CYAN;
-    else if (player.slots[0].find("흙") != string::npos)
-        color = YELLOW;
-    else if (player.slots[0].find("바람") != string::npos)
-        color = GREEN;
-
+    const char* color = WHITE;
     gotoxy(10, 5); cout << color << "  .--." << CLR;
     gotoxy(11, 5); cout << color << " ( .. )" << CLR;
     gotoxy(12, 5); cout << color << "  '--'" << CLR;
-
 }

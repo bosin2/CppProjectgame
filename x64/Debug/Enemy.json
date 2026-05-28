@@ -1,0 +1,323 @@
+{
+  "fire": [
+    {
+      "id": 1,
+      "grade": "하급",
+      "name": " 샐러맨더",
+      "hp": 40,
+      "ascii": [
+        "   /\\  /\\  ",
+        "  /  \\/  \\ ",
+        " | >    < |",
+        "  \\  /\\  / ",
+        "   \\/  \\/  "
+      ],
+      "ascii_hit": [
+        "   /\\  /\\  ",
+        "  /  \\/  \\ ",
+        " | x    x |",
+        "  \\  /\\  / ",
+        "   \\/  \\/  "
+      ],
+      "patterns": [
+        { "name": "화염 투척", "damage": 12, "type": "attack" },
+        { "name": "방어",      "damage": 0,  "type": "defend" },
+        { "name": "폭발",      "damage": 25, "type": "attack" }
+      ]
+    },
+    {
+      "id": 2,
+      "grade": "중급",
+      "name": " 이프리트",
+      "hp": 70,
+      "ascii": [
+        "  /\\  /\\  ",
+        " /  \\/  \\ ",
+        "| >> << |",
+        " \\  /\\  / ",
+        "  \\/  \\/  "
+      ],
+      "ascii_hit": [
+        "  /\\  /\\  ",
+        " /  \\/  \\ ",
+        "| xx xx |",
+        " \\  /\\  / ",
+        "  \\/  \\/  "
+      ],
+      "patterns": [
+        { "name": "화염 폭풍", "damage": 20, "type": "attack" },
+        { "name": "방어",      "damage": 0,  "type": "defend" },
+        { "name": "대폭발",    "damage": 35, "type": "attack" }
+      ]
+    },
+    {
+      "id": 3,
+      "grade": "상급",
+      "name": " 이그니스",
+      "hp": 120,
+      "ascii": [
+        " /\\/\\/\\ ",
+        "/  ><  \\",
+        "| ---- |",
+        "\\  \\/  /",
+        " \\/\\/\\/ "
+      ],
+      "ascii_hit": [
+        " /\\/\\/\\ ",
+        "/  xx  \\",
+        "| #### |",
+        "\\  \\/  /",
+        " \\/\\/\\/ "
+      ],
+      "patterns": [
+        { "name": "지옥불", "damage": 30, "type": "attack" },
+        { "name": "방어",   "damage": 0,  "type": "defend" },
+        { "name": "핵폭발", "damage": 50, "type": "attack" }
+      ]
+    }
+  ],
+  "water": [
+    {
+      "id": 1,
+      "grade": "하급",
+      "name": "  운디네",
+      "hp": 35,
+      "ascii": [
+        "  ~~~~~  ",
+        " ~ o o ~ ",
+        " ~ --- ~",
+        "  ~~~~~  "
+      ],
+      "ascii_hit": [
+        "  ~~~~~  ",
+        " ~ x x ~ ",
+        " ~ ^^^ ~",
+        "  ~~~~~  "
+      ],
+      "patterns": [
+        { "name": "물 채찍", "damage": 10, "type": "attack" },
+        { "name": "회복",    "damage": 10, "type": "heal"   },
+        { "name": "급류",    "damage": 20, "type": "attack" }
+      ]
+    },
+    {
+      "id": 2,
+      "grade": "중급",
+      "name": "  운다인",
+      "hp": 65,
+      "ascii": [
+        " ~~~~~~~ ",
+        "~ o   o ~",
+        "~  ___  ~",
+        " ~~~~~~~ "
+      ],
+      "ascii_hit": [
+        " ~~~~~~~ ",
+        "~ x   x ~",
+        "~  ^^^  ~",
+        " ~~~~~~~ "
+      ],
+      "patterns": [
+        { "name": "파도", "damage": 18, "type": "attack" },
+        { "name": "회복", "damage": 30, "type": "heal"   },
+        { "name": "해일", "damage": 32, "type": "attack" }
+      ]
+    },
+    {
+      "id": 3,
+      "grade": "상급",
+      "name": "  시큐엘",
+      "hp": 110,
+      "ascii": [
+        " ~~~~~~~~ ",
+        "~ >> << ~",
+        "~ ----- ~",
+        " ~~~~~~~~ "
+      ],
+      "ascii_hit": [
+        " ~~~~~~~~ ",
+        "~ xx xx ~",
+        "~   O   ~",
+        " ~~~~~~~~ "
+      ],
+      "patterns": [
+        { "name": "심해 압력", "damage": 28, "type": "attack" },
+        { "name": "회복",      "damage": 60, "type": "heal"   },
+        { "name": "쓰나미",    "damage": 45, "type": "attack" }
+      ]
+    }
+  ],
+  "earth": [
+    {
+      "id": 1,
+      "grade": "하급",
+      "name": "     놈",
+      "hp": 60,
+      "ascii": [
+        " +-----+ ",
+        " | o o | ",
+        " |  -  | ",
+        " +--+--+ "
+      ],
+      "ascii_hit": [
+        " +-----+ ",
+        " | x x | ",
+        " |  A  | ",
+        " +--+--+ "
+      ],
+      "patterns": [
+        { "name": "돌 투척",   "damage": 15, "type": "attack" },
+        { "name": "방어",      "damage": 0,  "type": "defend" },
+        { "name": "암석 낙하", "damage": 30, "type": "attack" }
+      ]
+    },
+    {
+      "id": 2,
+      "grade": "중급",
+      "name": "   노움",
+      "hp": 90,
+      "ascii": [
+        " +------+ ",
+        " | O  O | ",
+        " |  --  | ",
+        " +------+ "
+      ],
+      "ascii_hit": [
+        " +------+ ",
+        " | X  X | ",
+        " |  ^^  | ",
+        " +------+ "
+      ],
+      "patterns": [
+        { "name": "바위 던지기", "damage": 22, "type": "attack" },
+        { "name": "방어",        "damage": 0,  "type": "defend" },
+        { "name": "지진",        "damage": 38, "type": "attack" }
+      ]
+    },
+    {
+      "id": 3,
+      "grade": "상급",
+      "name": "  클래이",
+      "hp": 130,
+      "ascii": [
+        " +-------+ ",
+        " | X   X | ",
+        " | ----- | ",
+        " +--+++--+ "
+      ],
+      "ascii_hit": [
+        " +-------+ ",
+        " | #   # | ",
+        " | ~~~~~ | ",
+        " +--+++--+ "
+      ],
+      "patterns": [
+        { "name": "산사태", "damage": 32, "type": "attack" },
+        { "name": "방어",   "damage": 0,  "type": "defend" },
+        { "name": "대지진", "damage": 52, "type": "attack" }
+      ]
+    }
+  ],
+  "wind": [
+    {
+      "id": 1,
+      "grade": "하급",
+      "name": "  실프",
+      "hp": 30,
+      "ascii": [
+        "  )    (  ",
+        " ) o o ( ",
+        "(   _   )",
+        " )     (",
+        "  ) __ ( "
+      ],
+      "ascii_hit": [
+        "  )    (  ",
+        " ) x x ( ",
+        "(   o   )",
+        " )     (",
+        "  ) __ ( "
+      ],
+      "patterns": [
+        { "name": "칼바람",    "damage": 8,  "type": "attack" },
+        { "name": "회피",      "damage": 0,  "type": "buff"   },
+        { "name": "진공 베기", "damage": 18, "type": "attack" }
+      ]
+    },
+    {
+      "id": 2,
+      "grade": "중급",
+      "name": "  실라페",
+      "hp": 55,
+      "ascii": [
+        "  ))  ((  ",
+        " )) o o ((",
+        "((  ___  ))",
+        " ))     ((",
+        "  )) __ (( "
+      ],
+      "ascii_hit": [
+        "  ))  ((  ",
+        " )) x x ((",
+        "((  ~~~  ))",
+        " ))     ((",
+        "  )) __ (( "
+      ],
+      "patterns": [
+        { "name": "회오리", "damage": 15, "type": "attack" },
+        { "name": "회피",   "damage": 0,  "type": "buff"   },
+        { "name": "폭풍",   "damage": 28, "type": "attack" }
+      ]
+    },
+    {
+      "id": 3,
+      "grade": "상급",
+      "name": " 실레스틴",
+      "hp": 100,
+      "ascii": [
+        "  )))  (((  ",
+        " ))) X X (((",
+        "(((  ---  )))",
+        " )))     (((",
+        "  ))) __ ((( "
+      ],
+      "ascii_hit": [
+        "  )))  (((  ",
+        " ))) # # (((",
+        "(((   A   )))",
+        " )))     (((",
+        "  ))) __ ((( "
+      ],
+      "patterns": [
+        { "name": "대폭풍", "damage": 25, "type": "attack" },
+        { "name": "회피",   "damage": 0,  "type": "buff"   },
+        { "name": "태풍",   "damage": 42, "type": "attack" }
+      ]
+    }
+  ],
+  "boss": [
+    {
+      "id": 1,
+      "grade": "보스",
+      "name": "UNKNOWN",
+      "hp": 300,
+      "ascii": [
+
+        "⠀⠀⠀⠀⢀⣀⣤⣴⣦⣤⣄⠀⠀⠀⠀⠀",
+        "⠀⠀⠀⣴⣿⣿⣿⠿⣿⣿⣿⣧⡀⠀⠀⠀",
+        "⠀⠀⠀⣿⣿⠋⢁⣀⡀⠙⣛⣿⣷⠀⠀⠀",
+        "⠀⠀⠀⠹⠟⠀⠀⠶⠃⢸⠿⠟⡟⠀⠀⠀",
+        "⠀⠀⠀⠀⠀⠀⢠⣖⢠⣼⣦⡀⠀⠀⠀⠀",
+        "⠀⠀⠀⠀⠀⠀⠈⠉⠡⠼⠿⠁⠀⠀⠀⠀",
+        "⠀⠀⠀⠀⠀⠀⠀⠠⣶⣶⡄⠀⠀⠀⠀⠀"
+
+      ],
+      "patterns": [
+        { "name": "화염 강타", "damage": 35, "type": "attack" },
+        { "name": "냉기 파동", "damage": 30, "type": "attack" },
+        { "name": "암석 낙하", "damage": 40, "type": "attack" },
+        { "name": "방어",      "damage": 0,  "type": "defend" }
+      ]
+    }
+  ]
+}

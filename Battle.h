@@ -14,4 +14,4 @@ void drawSkillMenu(Player& player, int mode);
 bool startBattle(Player& player, Enemy& enemy);
 
 // 보스 전투 루프 (Boss는 Enemy 상속, 참조로 전달)
-bool startBossBatle(Player& player, Boss& boss);
+bool startBossBattle(Player& player, Boss& boss);

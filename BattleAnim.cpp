@@ -58,7 +58,7 @@ void shakeArt(int row, int col, vector<string>& ascii, const char* color,
 
 // 아스키아트 수평 이동 (startCol → endCol)
 void moveArt(int row, int startCol, int endCol, vector<string>& ascii,
-    const char* color, int speed) {
+    const char* color, int speed, const char* color2) {
 
     int maxWidth = 0;
     for (int i = 0; i < (int)ascii.size(); i++) {
@@ -67,26 +67,45 @@ void moveArt(int row, int startCol, int endCol, vector<string>& ascii,
     }
     int height = (int)ascii.size();
 
-    int step = (startCol < endCol) ? 2 : -2;  // 이동 방향 (2칸씩)
+    int step = (startCol < endCol) ? 2 : -2;
+    int clearLimit = endCol + 2;
 
     int col = startCol;
+    int frame = 0;
     while (true) {
-        // 종료 조건
         if (step > 0 && col >= endCol) break;
         if (step < 0 && col <= endCol) break;
 
-        // 이전 프레임 지우기
-        clearArea(row, col - abs(step), maxWidth + abs(step) * 2, height);
+        int clearStart = col - abs(step);
+        int clearW = maxWidth + abs(step) * 2;
 
-        // 현재 위치에 그리기
-        drawArtAt(row, col, ascii, color);
+        if (step > 0 && clearStart + clearW > clearLimit) {
+            clearW = clearLimit - clearStart;
+        }
+        if (clearW > 0) {
+            clearArea(row, clearStart, clearW, height);
+        }
+
+        // ★ color2 있으면 2색 교대, 없으면 단색
+        const char* curColor = color;
+        if (color2 != nullptr && frame % 2 == 1) {
+            curColor = color2;
+        }
+        drawArtAt(row, col, ascii, curColor);
 
         Sleep(speed);
         col += step;
+        frame++;
     }
 
-    // 마지막 프레임 제거
-    clearArea(row, col - abs(step), maxWidth + abs(step) * 2, height);
+    int clearStart = col - abs(step);
+    int clearW = maxWidth + abs(step) * 2;
+    if (step > 0 && clearStart + clearW > clearLimit) {
+        clearW = clearLimit - clearStart;
+    }
+    if (clearW > 0) {
+        clearArea(row, clearStart, clearW, height);
+    }
     cout.flush();
 }
 
@@ -248,13 +267,7 @@ void animEnemyHit(Enemy& enemy) {
 
 // 슬라임 피격 애니메이션 (표정 교체 + 흔들림)
 void animSlimeHit(Player& player) {
-    // 원소 색 결정
-    const char* color = CLR;
-    if (player.slots[0].find("불") != string::npos)       color = RED;
-    else if (player.slots[0].find("물") != string::npos)  color = CYAN;
-    else if (player.slots[0].find("흙") != string::npos)  color = YELLOW;
-    else if (player.slots[0].find("바람") != string::npos) color = GREEN;
-
+    const char* color = WHITE;
     int row = 10;
     int col = 5;
 
@@ -275,11 +288,7 @@ void animSlimeHit(Player& player) {
 }
 
 void animSlimeDefend(Player& player) {
-    const char* color = CLR;
-    if (player.slots[0].find("불") != string::npos)       color = RED;
-    else if (player.slots[0].find("물") != string::npos)  color = CYAN;
-    else if (player.slots[0].find("흙") != string::npos)  color = YELLOW;
-    else if (player.slots[0].find("바람") != string::npos) color = GREEN;
+    const char* color = WHITE;
 
     // 방어 표정 변경
     clearArea(10, 5, 10, 3);
@@ -513,34 +522,10 @@ void animComboAttack(Player& player, string comboName) {
     cout.flush();
     Sleep(150);
 
-    // 발사체 이동 (2색 교대)
+    // ★ 이동 루프 전체를 moveArt 한 줄로 대체
     int row = 10;
-    int startCol = 14;
     int endCol = 52;
-    int maxWidth = 0;
-    for (int i = 0; i < (int)data.art.size(); i++) {
-        if ((int)data.art[i].size() > maxWidth)
-            maxWidth = (int)data.art[i].size();
-    }
-    int height = (int)data.art.size();
-    int step = 2;
-    int col = startCol;
-    int frame = 0;
-
-    while (col < endCol) {
-        clearArea(row, max(1, col - step), maxWidth + step * 2, height);
-
-        // 색상 교대
-        const char* curColor = (frame % 2 == 0) ? data.color1 : data.color2;
-        drawArtAt(row, col, data.art, curColor);
-
-        Sleep(20);
-        col += step;
-        frame++;
-    }
-
-    // 마지막 프레임 제거
-    clearArea(row, col - step, maxWidth + step * 2, height);
+    moveArt(row, 14, endCol, data.art, data.color1, 20, data.color2);
 
     // 착탄 이펙트
     vector<string> bigImpact = {
