@@ -2,10 +2,7 @@
 #include <string>
 using namespace std;
 
-// ========================================
-// Character : 모든 전투 캐릭터의 부모 클래스
-// Player, Enemy, Boss 가 이 클래스를 상속받음
-// ========================================
+// 전투 캐릭터 기반 클래스 (Player, Enemy, Boss 상속)
 class Character {
 public:
     string name;
@@ -22,7 +19,7 @@ public:
         isDefending = true;
     }
 
-    // 데미지 입는거 (방어 중이면 절반)
+    // 데미지 처리 (방어 중이면 절반)
     void takeDamage(int dmg) {
         if (isDefending) dmg /= 2;
         hp -= dmg;

@@ -11,20 +11,22 @@
 using json = nlohmann::json;
 using namespace std;
 
-//몬스터 패턴
+// 몬스터 행동 패턴 1개
 class Pattern {
 public:
     string name;
     int damage;
     string type;
 };
-// character 에서 몬스터 상속 
+
+// 원소 몬스터 (Character 상속)
 class Enemy : public Character {
 public:
     string element;
     string grade;
 
     vector<string>  ascii;
+    vector<string>  ascii_hit;  // 피격 시 표정 (눈이 x로 변함)
     vector<Pattern> patterns;
 
     int  nextPattern = 0;
@@ -36,5 +38,5 @@ public:
         defense = 0;
     }
 };
-//등급, 원소
+// JSON에서 원소·등급으로 몬스터 로드
 Enemy loadEnemy(string element, string grade);

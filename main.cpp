@@ -194,8 +194,8 @@ int main() {
             bool bossVictory = startBossBattle(player, boss);
 
             if (!bossVictory)
-                break; //보스 클리어 못할시 빠져나오기 showDie로   
-            break;//클리어시 엔딩 
+                break; // 패배 → showDie
+            break; // 클리어 → showEnd
         }
     }
 

@@ -4,18 +4,18 @@
 #include <windows.h>
 #include <iostream>
 
-// 화면 전체를 지우고 커서를 홈 위치로 이동시키는 ANSI 이스케이프 시퀀스
+// 화면 초기화 + 커서 홈 이동
 #define CLEAR "\x1b[2J\x1b[H"
 
 using namespace std;
 
-// 콘솔 커서를 특정 위치(행, 열)로 이동시키는 함수
+// 커서를 (row, col)로 이동
 void gotoxy(int row, int col);
 
-// 체력 바를 화면에 그리는 함수
+// HP/MP 바 출력
 void drawHpBar(int current, int max);
 
-// extern : 외부에있는 변수를 선언함
+// ANSI 색상 코드 (Define.cpp에서 정의)
 extern const char* CLR;
 extern const char* RED;
 extern const char* BLUE;
@@ -27,7 +27,7 @@ extern const char* WHITE;
 extern const char* BLACK;
 extern const char* BOLD;
 
-// 배경색 포함 코드
+// 배경색 코드
 extern const char* WB;
 extern const char* BB;
 extern const char* RB;

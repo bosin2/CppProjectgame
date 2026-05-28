@@ -1,6 +1,7 @@
-#include "Enemy.h" //jsonㅠ파싱함수
+#include "Enemy.h"
 #include "Boss.h"
 
+// JSON에서 원소·등급으로 몬스터 로드
 Enemy loadEnemy(string element, string grade) {
     ifstream f("Enemy.json");
     json data = json::parse(f);
@@ -18,6 +19,11 @@ Enemy loadEnemy(string element, string grade) {
             for (auto& line : em["ascii"])
                 e.ascii.push_back(line);
 
+            if (em.contains("ascii_hit")) {
+                for (auto& line : em["ascii_hit"])
+                    e.ascii_hit.push_back(line);
+            }
+
             for (auto& p : em["patterns"]) {
                 Pattern pat;
                 pat.name = p["name"];
@@ -31,6 +37,7 @@ Enemy loadEnemy(string element, string grade) {
     return e;
 }
 
+// JSON에서 보스 데이터 로드
 Boss loadBoss() {
     ifstream f("Enemy.json");
     json data = json::parse(f);

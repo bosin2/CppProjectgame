@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-//콘솔커서이동시키는함수
+// 커서를 (row, col)로 이동
 void gotoxy(int row, int col) {
     printf("\x1b[%d;%dH", row, col);
 }
@@ -14,7 +14,7 @@ void drawHpBar(int current, int max) {
     cout << "] " << current << "/" << max;
 }
 
-// 글자색
+// 글자색 코드
 const char* CLR = "\x1b[0m";
 const char* RED = "\x1b[31m";
 const char* BLUE = "\x1b[34m";
@@ -28,7 +28,7 @@ const char* BLACK = "\x1b[30m";
 // 볼드체
 const char* BOLD = "\x1b[1m";
 
-// 배경색
+// 배경색 코드
 const char* WB = "\x1b[47m";
 const char* BB = "\x1b[44m";
 const char* RB = "\x1b[41m";

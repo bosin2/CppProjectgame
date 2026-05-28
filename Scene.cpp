@@ -1,13 +1,13 @@
 #include "Scene.h"
 
-//장면출력함수
+// 아스키아트 + 구분선 + 대사를 출력하고 Enter 대기
 void drawScene(string art[], int artC, string txt) {
-    cout << CLEAR; //화면지우기
+    cout << CLEAR;
 
     cout << "\n";
 
     for (int i = 0; i < artC; i++)
-        cout << art[i] << "\n"; //아스키아트줄만큼 출력
+        cout << art[i] << "\n";
 
     for (int i = 0; i < 50; i++) cout << "─";
     cout << "\n";
@@ -138,12 +138,12 @@ void showPrologue() {
     drawScene(art4, art4Size, "인간 A : B, 봐봐 저거 슬라임 아니야 ?");
     drawScene(art4, art4Size, "인간 B : 슬라임 ? 설마... 들어간 건가 ?");
 }
-//설명
+// 게임 설명 화면 (미구현)
 void showExplan() {
 
 }
 
-//원소선택
+// 원소 선택 화면 출력
 void startChoice() {
     cout << CLEAR;
     cout << "\n";
@@ -200,7 +200,7 @@ void showHeal(Player& player) {
 }
 void showEnd(Player& player) {
 
-    // 슬라임
+    // 엔딩 씬 1: 탑 탈출
     string art1[] = {
     "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁⠀⠀⣿⣿⣿",
     "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⠀⠀⢨⣿⣿⣿",
@@ -222,7 +222,7 @@ void showEnd(Player& player) {
     drawScene(art1, art1Size, "당신은 모든 전투를 마치고 탑에서 걸어나왔습니다.");
 
 
-    // 슬라임
+    // 엔딩 씬 2: 인간들과 재회
     string art2[] = {
     "⠑⠨⡙⠦⡀⠑⠕⢕⢄⠘⠄⠈⢆⠈⢆⠘⡀⠁⠘⠄⠂⠐⠀⠏⠘⢀⠓⡐⠀⠌⠢⡢⠡⠊⡢⠊⡈⠔⢁⡠⣞⠽⡪⣕",
     "⠳⢦⣀⠁⠈⠢⢈⠀⠅⠑⠈⠢⠀⠣⠈⠆⠐⠀⠀⠅⠨⢐⠠⠁⠁⠄⡑⠀⠀⠑⠐⠈⡈⠀⡀⠊⡠⢒⠕⠊⡢⢑⡪⣒",
@@ -243,7 +243,7 @@ void showEnd(Player& player) {
     drawScene(art2, art2Size, "인간들 : 대단해 슬라임 ! 네가 세상을 구했어 !");
     drawScene(art2, art2Size, "슬라임 : ? )))");
 
-    // 흑백
+    // 엔딩 씬 3: 전환 (암전)
     string art3[] = {
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
@@ -263,7 +263,7 @@ void showEnd(Player& player) {
     drawScene(art3, art3Size, "당신은 인간들과 함께 마을로 갔습니다.");
     drawScene(art3, art3Size, "며칠 뒤...");
 
-    // 동상
+    // 엔딩 씬 4: 슬라임 동상
     string art4[] = {
     "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⣠⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
     "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⢽⣶⣾⣿⣿⣾⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
@@ -286,7 +286,7 @@ void showEnd(Player& player) {
     drawScene(art4, art4Size, "인간 B : 음, 그래. 동상 이름은 슬라임 용사가 좋겠어. 너도 괜찮지 ?");
     drawScene(art4, art4Size, "슬라임 : ,,⁃ ⩊ ⁃,,)))");
 
-    // 최종 스탯 화면
+    // 최종 스탯 출력
     cout << CLEAR;
     cout << "\n\n";
     cout << YELLOW << BOLD;

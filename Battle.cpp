@@ -1,4 +1,5 @@
 #include "Battle.h"
+#include "BattleAnim.h"
 #include "Boss.h"
 #include "Player.h"
 #include <iostream>
@@ -9,10 +10,9 @@ using namespace std;
 
 
 void enemyDie(Player& player, Enemy& enemy, string& msg) {
-    for (int i = 0; i < (int)enemy.ascii.size(); i++) {
-        gotoxy(8 + i, 55);
-        cout << "                              ";
-    }
+    // 스르륵 사라지는 애니메이션
+    animEnemyDie(enemy);
+
     enemy.ascii.clear();
     msg = enemy.name + "(이)가 쓰러졌습니다 ! ⸜(⠀  ᐢ ᵕ ᐢ  )⸝‍";
     drawBattle(player, enemy, msg);
@@ -40,7 +40,7 @@ float elemCounter(string pSlot, string eElem) {
     return 1.0f;
 }
 
-//============================================= U I ================================================
+// ── UI ──
 void drawBattle(Player& player, Enemy& enemy, string currentMessage) {
     cout << CLEAR;
 
@@ -116,7 +116,7 @@ void drawSkillMenu(Player& player, int mode) {
     }
 }
 
-//===========================================로직================================================
+// ── 전투 로직 ──
 bool startBattle(Player& player, Enemy& enemy) {
     enemy.nextPattern = rand() % enemy.patterns.size();
     string msg = enemy.name + "(이)가 나타났습니다 !";
@@ -150,7 +150,9 @@ bool startBattle(Player& player, Enemy& enemy) {
                         msg = enemy.name + "이(가) 공격을 회피했다 !";
                     }
                     else {
+                        animProjectile(player, myElem);
                         enemy.takeDamage(finalDmg);
+                        animEnemyHit(enemy);
                         msg = "[" + myElem + "] 공격 !";
                         if (multiplier > 1.0f) msg += " 효과가 굉장했다 !! " + to_string(finalDmg) + "의 피해를 입혔다 ! (*>∇<)ﾉ";
                         else if (multiplier < 1.0f) msg += " 효과가 별로인 듯하다...( > ~ < )💦 " + to_string(finalDmg) + " 의 피해를 입혔다...";
@@ -190,8 +192,10 @@ bool startBattle(Player& player, Enemy& enemy) {
                         msg = enemy.name + "이(가) 공격을 회피했다 ! Σ(； ･`д･´)";
                     }
                     else {
+                        animComboAttack(player, skillName);
                         player.mp -= 3;
                         enemy.takeDamage(finalDmg);
+                        animEnemyHit(enemy);
                         msg = skillName + " 시전 !! " + enemy.name + "에게 " + to_string(finalDmg) + "의 피해 ! (*>∇<)ﾉ";
                     }
                     enemy.isMiss = false;
@@ -207,6 +211,7 @@ bool startBattle(Player& player, Enemy& enemy) {
         }
         else if (choice == 3) {
             player.defend();
+            animSlimeDefend(player);
             msg = "방어 자세를 취했습니다. 입는 데미지가 줄어듭니다. (･`_´･ )";
         }
         else continue;
@@ -221,29 +226,34 @@ bool startBattle(Player& player, Enemy& enemy) {
 
         drawBattle(player, enemy, msg);
         drawSkillMenu(player, 0);
-        Sleep(3000);
+        Sleep(1500);
 
         // 몬스터 턴
         Pattern& mTurn = enemy.patterns[enemy.nextPattern];
 
         if (mTurn.type == "attack") {
+            animEnemyAttack(enemy);
             int dmg = mTurn.damage;
             player.takeDamage(dmg);
+            animSlimeHit(player);
             if (player.isDefending)
                 msg = enemy.name + "이(가) [" + mTurn.name + "]을(를) 사용했습니다 ! (방어 성공 ! " + to_string(dmg / 2) + " 피해)";
             else
                 msg = enemy.name + "이(가) [" + mTurn.name + "]을(를) 사용했습니다 ! (" + to_string(dmg) + " 피해)";
         }
         else if (mTurn.type == "defend") {
+            animEnemyDefend(enemy);
             enemy.defend();
             msg = enemy.name + "이(가) 방어 자세를 취했습니다 !";
         }
         else if (mTurn.type == "heal") {
+            animEnemyHeal(enemy);
             int heal = mTurn.damage;
             enemy.hp = min(enemy.hp + heal, enemy.maxHp);
             msg = enemy.name + "이(가) 체력을 회복했습니다 ! (+" + to_string(heal) + ")";
         }
         else if (mTurn.type == "buff") {
+            animEnemyBuff(enemy);
             enemy.isMiss = true;
             msg = enemy.name + "이(가) 몸을 날렵하게 했습니다 !";
         }
@@ -263,10 +273,7 @@ bool startBattle(Player& player, Enemy& enemy) {
     return (player.hp > 0);
 }
 
-// ================================================
-// 보스 전투 로직
-// Enemy를 상속받은 Boss를 Enemy& 로 받아 drawBattle 재사용
-// ================================================
+// 보스 전투 로직 (Boss는 Enemy& 로 drawBattle 재사용)
 bool startBossBattle(Player& player, Boss& boss) {
     boss.nextPattern = 0;
     string msg = "";
@@ -346,9 +353,6 @@ bool startBossBattle(Player& player, Boss& boss) {
         // 보스 사망 체크
         if (!boss.isAlive()) {
             boss.hp = 0;
-            //boss.ascii.clear();
-            //msg = 대사 
-            // 신 전환 및 아스키 
             cin.get();
             break;
         }
@@ -363,14 +367,13 @@ bool startBossBattle(Player& player, Boss& boss) {
         if (bTurn.type == "attack") {
             int dmg = bTurn.damage;
             player.takeDamage(dmg);
-            if (player.isDefending) //보스 이름 들어가야함 
+            if (player.isDefending)
                 msg = "보스 이름 [" + bTurn.name + "] ! (방어 성공 ! " + to_string(dmg / 2) + " 피해)";
             else
                 msg = "보스 이름 [" + bTurn.name + "] 을(를) 사용했다 ! (" + to_string(dmg) + " 피해)";
         }
         else if (bTurn.type == "defend") {
             boss.defend();
-            //msg = " "; 방어 대사 
         }
 
         player.isDefending = false;
@@ -378,7 +381,7 @@ bool startBossBattle(Player& player, Boss& boss) {
 
         if (!player.isAlive()) {
             player.hp = 0;
-            drawBattle(player, boss, "보스 에게 쓰러졌습니다...");// 보스이름 들어가야함 
+            drawBattle(player, boss, "보스 에게 쓰러졌습니다...");
             Sleep(2000);
             break;
         }

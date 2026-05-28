@@ -2,6 +2,7 @@
 #include "Define.h"
 #include <iostream>
 
+// 슬롯 1번 원소 색으로 슬라임 아스키아트 출력
 void drawSlime(Player& player) {
     const char* color = CLR;
 
