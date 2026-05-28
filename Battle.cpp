@@ -2,6 +2,7 @@
 #include "BattleAnim.h"
 #include "Boss.h"
 #include "Player.h"
+#include "MouseInput.h"
 #include <iostream>
 #include <conio.h>
 #include <string>
@@ -18,7 +19,7 @@ void enemyDie(Player& player, Enemy& enemy, string& msg) {
     drawBattle(player, enemy, msg);
     drawSkillMenu(player, 0);
     gotoxy(29, 1);
-    cout << "전투 승리! ヽ(◍˃ᗜ˂◍)ﾉ (엔터를 누르면 계속...)";
+    cout << "전투 승리! ヽ(◍˃ᗜ˂◍)ﾉ (아무 곳이나 클릭하면 계속...)"; 
 }
 
 bool hasElement(Player& p, string name) {
@@ -87,32 +88,32 @@ void drawSkillMenu(Player& player, int mode) {
     }
     if (mode == 0) {
         gotoxy(19, 1); cout << "┏━━━━━━━━━━━━━━━━━━━━━━━━━━┓";
-        gotoxy(20, 1); cout << "┃  1: 원소 공격            ┃";
-        gotoxy(21, 1); cout << "┃  2: 조합 공격            ┃";
-        gotoxy(22, 1); cout << "┃  3: 방어 하기            ┃";
+        gotoxy(20, 1); cout << "┃         원소 공격        ┃";
+        gotoxy(21, 1); cout << "┃         조합 공격        ┃";
+        gotoxy(22, 1); cout << "┃         방어 하기        ┃";
         gotoxy(23, 1); cout << "┗━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
-        gotoxy(27, 1); cout << "선택 (1~3)⇒ ";
+        gotoxy(27, 1); cout << "해당 메뉴를 클릭하세요  ";
     }
     else if (mode == 1) {
         gotoxy(19, 1); cout << "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓";
         gotoxy(20, 1); cout << "┃ [ 원소 공격 목록 (MP 1) ]            ┃";
-        gotoxy(21, 1); cout << "┃ 1: [" << (player.slots[0] == "" ? "-" : player.slots[0]) << "]";
-        gotoxy(22, 1); cout << "┃ 2: [" << (player.slots[1] == "" ? "-" : player.slots[1]) << "]";
-        gotoxy(23, 1); cout << "┃ 3: [" << (player.slots[2] == "" ? "-" : player.slots[2]) << "]";
+        gotoxy(21, 1); cout << "┃ [" << (player.slots[0] == "" ? "-" : player.slots[0]) << "]";
+        gotoxy(22, 1); cout << "┃ [" << (player.slots[1] == "" ? "-" : player.slots[1]) << "]";
+        gotoxy(23, 1); cout << "┃ [" << (player.slots[2] == "" ? "-" : player.slots[2]) << "]";
         gotoxy(24, 1); cout << "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
-        gotoxy(27, 1); cout << "슬롯 번호 선택 (1~3, 0=뒤로) ⇒ ";
+        gotoxy(27, 1); cout << "슬롯 클릭 (화면 바깥 클릭 시 뒤로) ⇒ ";
     }
     else if (mode == 2) {
         gotoxy(19, 1); cout << "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓";
         gotoxy(20, 1); cout << "┃ [ 조합 공격 목록 (MP 3) ]            ┃";
-        gotoxy(21, 1); cout << "┃ 1: " << (hasElement(player, "불") && hasElement(player, "물") ? "증기 폭발 (불+물)  " : "[조합 잠금]        ") << "               ┃";
-        gotoxy(22, 1); cout << "┃ 2: " << (hasElement(player, "불") && hasElement(player, "흙") ? "용암 투척 (불+흙)  " : "[조합 잠금]        ") << "               ┃";
-        gotoxy(23, 1); cout << "┃ 3: " << (hasElement(player, "불") && hasElement(player, "바람") ? "화염 돌풍 (불+바람)" : "[조합 잠금]        ") << "               ┃";
-        gotoxy(24, 1); cout << "┃ 4: " << (hasElement(player, "물") && hasElement(player, "흙") ? "진흙 늪   (물+흙)  " : "[조합 잠금]        ") << "               ┃";
-        gotoxy(25, 1); cout << "┃ 5: " << (hasElement(player, "물") && hasElement(player, "바람") ? "빙결 화살 (물+바람)" : "[조합 잠금]        ") << "               ┃";
-        gotoxy(26, 1); cout << "┃ 6: " << (hasElement(player, "흙") && hasElement(player, "바람") ? "모래 폭풍 (흙+바람)" : "[조합 잠금]        ") << "               ┃";
+        gotoxy(21, 1); cout << "┃ " << (hasElement(player, "불") && hasElement(player, "물") ? "증기 폭발 (불+물)  " : "[조합 잠금]        ") << "               ┃";
+        gotoxy(22, 1); cout << "┃ " << (hasElement(player, "불") && hasElement(player, "흙") ? "용암 투척 (불+흙)  " : "[조합 잠금]        ") << "               ┃";
+        gotoxy(23, 1); cout << "┃ " << (hasElement(player, "불") && hasElement(player, "바람") ? "화염 돌풍 (불+바람)" : "[조합 잠금]        ") << "               ┃";
+        gotoxy(24, 1); cout << "┃ " << (hasElement(player, "물") && hasElement(player, "흙") ? "진흙 늪   (물+흙)  " : "[조합 잠금]        ") << "               ┃";
+        gotoxy(25, 1); cout << "┃ " << (hasElement(player, "물") && hasElement(player, "바람") ? "빙결 화살 (물+바람)" : "[조합 잠금]        ") << "               ┃";
+        gotoxy(26, 1); cout << "┃ " << (hasElement(player, "흙") && hasElement(player, "바람") ? "모래 폭풍 (흙+바람)" : "[조합 잠금]        ") << "               ┃";
         gotoxy(27, 1); cout << "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
-        gotoxy(28, 1); cout << "조합 번호 선택 (1~6, 0=뒤로) ⇒ ";
+        gotoxy(28, 1); cout << "조합 번호 클릭 (화면 바깥 클릭 시 뒤로) ⇒ ";
     }
 }
 
@@ -124,14 +125,29 @@ bool startBattle(Player& player, Enemy& enemy) {
     while (player.hp > 0 && enemy.hp > 0) {
         drawBattle(player, enemy, msg);
         drawSkillMenu(player, 0);
-        int choice;
-        cin >> choice;
+        
+        int choice = 0;
+        while (choice == 0) {
+            COORD pos = getMouseClick();
+            if (pos.Y == 19) choice = 1;      
+            else if (pos.Y == 20) choice = 2; 
+            else if (pos.Y == 21) choice = 3;
+        }
 
         if (choice == 1) {
             if (player.mp >= 1) {
                 drawSkillMenu(player, 1);
-                int sel;
-                cin >> sel;
+                
+                
+                int sel = -1;
+                while (sel == -1) {
+                    COORD pos = getMouseClick();
+                    if (pos.Y == 20) sel = 1;      
+                    else if (pos.Y == 21) sel = 2; 
+                    else if (pos.Y == 22) sel = 3; 
+                    else sel = 0;
+                }
+
                 if (sel == 0) continue;
                 int idx = sel - 1;
 
@@ -172,8 +188,19 @@ bool startBattle(Player& player, Enemy& enemy) {
         else if (choice == 2) {
             if (player.mp >= 3) {
                 drawSkillMenu(player, 2);
-                int ult;
-                cin >> ult;
+            
+                int ult = -1;
+                while (ult == -1) {
+                    COORD pos = getMouseClick();
+                    if (pos.Y == 20) ult = 1;      
+                    else if (pos.Y == 21) ult = 2; 
+                    else if (pos.Y == 22) ult = 3; 
+                    else if (pos.Y == 23) ult = 4; 
+                    else if (pos.Y == 24) ult = 5; 
+                    else if (pos.Y == 25) ult = 6; 
+                    else ult = 0; 
+                }
+
                 if (ult == 0) continue;
 
                 bool possible = false;
@@ -219,8 +246,7 @@ bool startBattle(Player& player, Enemy& enemy) {
         if (enemy.hp <= 0) {
             enemy.hp = 0;
             enemyDie(player, enemy, msg);
-            cin.ignore(1000, '\n');
-            cin.get();
+            waitAnyClick(); 
             break;
         }
 
@@ -274,6 +300,9 @@ bool startBattle(Player& player, Enemy& enemy) {
 }
 
 // 보스 전투 로직 (Boss는 Enemy& 로 drawBattle 재사용)
+// ================================================
+// 보스 전투 로직
+// ================================================
 bool startBossBattle(Player& player, Boss& boss) {
     boss.nextPattern = 0;
     string msg = "";
@@ -282,14 +311,31 @@ bool startBossBattle(Player& player, Boss& boss) {
 
         drawBattle(player, boss, msg);
         drawSkillMenu(player, 0);
-        int choice;
-        cin >> choice;
+        
+      
+        int choice = 0;
+        while (choice == 0) {
+            COORD pos = getMouseClick();
+            if (pos.Y == 19) choice = 1;
+            else if (pos.Y == 20) choice = 2;
+            else if (pos.Y == 21) choice = 3;
+        }
 
         // ── 플레이어 턴 ──
         if (choice == 1) {
             if (player.mp >= 1) {
                 drawSkillMenu(player, 1);
-                int sel; cin >> sel;
+                
+                
+                int sel = -1;
+                while (sel == -1) {
+                    COORD pos = getMouseClick();
+                    if (pos.Y == 20) sel = 1;
+                    else if (pos.Y == 21) sel = 2;
+                    else if (pos.Y == 22) sel = 3;
+                    else sel = 0;
+                }
+
                 if (sel == 0) continue;
                 int idx = sel - 1;
 
@@ -316,7 +362,20 @@ bool startBossBattle(Player& player, Boss& boss) {
         else if (choice == 2) {
             if (player.mp >= 3) {
                 drawSkillMenu(player, 2);
-                int ult; cin >> ult;
+                
+               
+                int ult = -1;
+                while (ult == -1) {
+                    COORD pos = getMouseClick();
+                    if (pos.Y == 20) ult = 1;
+                    else if (pos.Y == 21) ult = 2;
+                    else if (pos.Y == 22) ult = 3;
+                    else if (pos.Y == 23) ult = 4;
+                    else if (pos.Y == 24) ult = 5;
+                    else if (pos.Y == 25) ult = 6;
+                    else ult = 0;
+                }
+
                 if (ult == 0) continue;
 
                 bool possible = false;
@@ -354,6 +413,7 @@ bool startBossBattle(Player& player, Boss& boss) {
         if (!boss.isAlive()) {
             boss.hp = 0;
             cin.get();
+            waitAnyClick(); 
             break;
         }
 
@@ -368,6 +428,7 @@ bool startBossBattle(Player& player, Boss& boss) {
             int dmg = bTurn.damage;
             player.takeDamage(dmg);
             if (player.isDefending)
+            if (player.isDefending) 
                 msg = "보스 이름 [" + bTurn.name + "] ! (방어 성공 ! " + to_string(dmg / 2) + " 피해)";
             else
                 msg = "보스 이름 [" + bTurn.name + "] 을(를) 사용했다 ! (" + to_string(dmg) + " 피해)";
@@ -382,6 +443,7 @@ bool startBossBattle(Player& player, Boss& boss) {
         if (!player.isAlive()) {
             player.hp = 0;
             drawBattle(player, boss, "보스 에게 쓰러졌습니다...");
+            drawBattle(player, boss, "보스 에게 쓰러졌습니다..."); 
             Sleep(2000);
             break;
         }

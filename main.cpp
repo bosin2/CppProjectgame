@@ -1,11 +1,14 @@
 #include <windows.h>
+#include <iostream>
+#include <string>
+#include "MouseInput.h" 
+#include "Player.h"
 #include "Map.h"
 #include "Battle.h"
 #include "Boss.h"
 #include "Scene.h"
-#include "Player.h"
-#include <iostream>
-#include <string>
+
+using namespace std;
 
 string translateElement(string engElem) {
     if (engElem == "fire")  return "불";
@@ -19,12 +22,29 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 
+    HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
+    DWORD mode;
+    GetConsoleMode(hStdin, &mode);
+    mode &= ~ENABLE_QUICK_EDIT_MODE; 
+    mode |= ENABLE_MOUSE_INPUT;
+    SetConsoleMode(hStdin, mode);
+
     Player player;
     initMap();
+
     while (true) {
         showTitle();
-        int choice;
-        cin >> choice;
+        
+        int choice = 0;
+        while (choice == 0) {
+            COORD pos = getMouseClick();
+            if (pos.Y == 24 && (pos.X >= 15 && pos.X <= 35)) {
+                choice = 1;
+            }
+            else if (pos.Y == 25 && (pos.X >= 15 && pos.X <= 35)) {
+                choice = 2;
+            }
+        }
 
         if (choice == 1) { showPrologue(); break; }
         else if (choice == 2) { showExplan(); }
@@ -33,8 +53,17 @@ int main() {
     // 스타팅 원소 선택
     while (true) {
         startChoice();
-        int startElem;
-        cin >> startElem;
+        
+        int startElem = 0;
+        while (startElem == 0) {
+            COORD pos = getMouseClick();
+            if (pos.Y >= 15 && pos.Y <= 18) {
+                if (pos.X >= 2 && pos.X <= 12) startElem = 1;
+                else if (pos.X >= 15 && pos.X <= 25) startElem = 2;
+                else if (pos.X >= 28 && pos.X <= 38) startElem = 3;
+                else if (pos.X >= 41 && pos.X <= 53) startElem = 4;
+            }
+        }
 
         switch (startElem) {
         case 1: player.slots[0] = "불";   break;
@@ -45,17 +74,34 @@ int main() {
         }
         break;
     }
+
     drawStartMap();
-    char startInput;
-    cin >> startInput;
+    char startInput = '0';
+    while (startInput == '0') {
+        COORD pos = getMouseClick();
+        int clickedRow = pos.Y / 2; 
+        if (clickedRow >= 0 && clickedRow < ROWS) {
+            startInput = '1' + clickedRow;
+        }
+    }
+
     player.row = startInput - '1';
     player.col = 0;
+
     while (true) {
         drawMap(player);
 
-        cout << "\n  입력: ";
-        char input;
-        cin >> input;
+        cout << "\n  화면의 맵 타일이나 이동 방향을 클릭하여 이동하세요.\n";
+        
+        char input = '0';
+        while (input == '0') {
+            COORD pos = getMouseClick();
+            int playerBaseY = 1 + player.row * 2;
+            
+            if (pos.Y < playerBaseY - 1) input = '1';
+            else if (pos.Y > playerBaseY + 1) input = '3';
+            else input = '2';
+        }
 
         int newRow = player.row;
         int newCol = player.col + 1;
@@ -160,9 +206,17 @@ int main() {
             if (!handled) {
                 cout << ">> 슬롯이 가득 찼습니다! 새 원소: [" << dropElem << "]\n\n";
                 cout << "1: " << player.slots[0] << "  2: " << player.slots[1] << "  3: " << player.slots[2] << "\n";
-                cout << "교체할 슬롯 선택 (1~3, 0=포기) >> ";
-                int replaceIdx;
-                cin >> replaceIdx;
+                cout << "교체할 슬롯 클릭 (화면 우측 클릭 시 원소 포기) >> ";
+                
+                int replaceIdx = -1;
+                while (replaceIdx == -1) {
+                    COORD pos = getMouseClick();
+                    if (pos.X < 20) replaceIdx = 1;
+                    else if (pos.X < 40) replaceIdx = 2;
+                    else if (pos.X < 60) replaceIdx = 3;
+                    else replaceIdx = 0;
+                }
+                
                 if (replaceIdx >= 1 && replaceIdx <= 3) {
                     cout << "\n[" << player.slots[replaceIdx - 1] << "] 버리고 [" << dropElem << "] 장착\n";
                     player.slots[replaceIdx - 1] = dropElem;
@@ -172,23 +226,23 @@ int main() {
                 }
             }
 
-            cout << "\n엔터를 누르면 맵으로 돌아갑니다...";
-            cin.get();
+            cout << "\n아무 곳이나 클릭하면 맵으로 돌아갑니다...";
+            waitAnyClick();
         }
 
         // 우물 타일
         if (gameMap[player.row][player.col] == WELL) {
             player.hp = min(player.hp + 30, player.maxHp);
             player.mp = min(player.mp + 20, player.maxMp);
-            cin.get();
+            waitAnyClick();
             showHeal(player);
         }
 
         // 보스 타일
         if (gameMap[player.row][player.col] == BOSS) {
             drawMap(player);
-            cout << "\n  [시스템] 보스 등장!!\n";
-            cin.get();
+            cout << "\n  [시스템] 보스 등장!! (아무 곳이나 클릭하세요)\n";
+            waitAnyClick();
 
             Boss boss = loadBoss();
             bool bossVictory = startBossBattle(player, boss);
@@ -202,15 +256,15 @@ int main() {
     // 엔딩
     cout << CLEAR;
     if (player.hp > 0) {
-        cin.get();
+        waitAnyClick();
         showEnd(player);
     }
     else {
-        cin.get();
+        waitAnyClick();
         showDie();
     }
 
-    cout << "\n엔터를 누르면 게임을 종료합니다...";
-    cin.get();
+    cout << "\n아무 곳이나 클릭하면 게임을 종료합니다...";
+    waitAnyClick();
     return 0;
 }
