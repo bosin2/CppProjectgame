@@ -1,6 +1,7 @@
 #include <windows.h>
 #include <iostream>
 #include <string>
+#include <algorithm>
 #include "MouseInput.h" 
 #include "Player.h"
 #include "Map.h"
@@ -24,10 +25,12 @@ int main() {
 
     HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
     DWORD mode;
-    GetConsoleMode(hStdin, &mode);
-    mode &= ~ENABLE_QUICK_EDIT_MODE; 
-    mode |= ENABLE_MOUSE_INPUT;
-    SetConsoleMode(hStdin, mode);
+    if (GetConsoleMode(hStdin, &mode)) {
+        mode |= ENABLE_EXTENDED_FLAGS;
+        mode &= ~ENABLE_QUICK_EDIT_MODE;
+        mode |= ENABLE_MOUSE_INPUT;
+        SetConsoleMode(hStdin, mode);
+    }
 
     Player player;
     initMap();
@@ -38,11 +41,11 @@ int main() {
         int choice = 0;
         while (choice == 0) {
             COORD pos = getMouseClick();
-            if (pos.Y == 24 && (pos.X >= 15 && pos.X <= 35)) {
-                choice = 1;
+            if (pos.Y == 24) {
+                choice = 1;  // 시작하기
             }
-            else if (pos.Y == 25 && (pos.X >= 15 && pos.X <= 35)) {
-                choice = 2;
+            else if (pos.Y == 26) {
+                choice = 2;  // 설명보기
             }
         }
 
@@ -57,11 +60,12 @@ int main() {
         int startElem = 0;
         while (startElem == 0) {
             COORD pos = getMouseClick();
-            if (pos.Y >= 15 && pos.Y <= 18) {
-                if (pos.X >= 2 && pos.X <= 12) startElem = 1;
-                else if (pos.X >= 15 && pos.X <= 25) startElem = 2;
-                else if (pos.X >= 28 && pos.X <= 38) startElem = 3;
-                else if (pos.X >= 41 && pos.X <= 53) startElem = 4;
+            // Y=19: 박스 상단, Y=20: 박스 내용, Y=21: 박스 하단
+            if (pos.Y >= 19 && pos.Y <= 21) {
+                if      (pos.X >= 2  && pos.X <= 13) startElem = 1;  // 불
+                else if (pos.X >= 18 && pos.X <= 29) startElem = 2;  // 물
+                else if (pos.X >= 34 && pos.X <= 45) startElem = 3;  // 흙
+                else if (pos.X >= 50 && pos.X <= 61) startElem = 4;  // 바람
             }
         }
 
@@ -154,13 +158,32 @@ int main() {
             bool handled = false;
 
             cout << CLEAR;
-            cout << "========= [ 전리품 획득 ] =========\n\n";
+
+            // 드롭 원소 색상 헬퍼
+            auto elemColor = [&](const string& e) -> const char* {
+                if (e == "불")   return RED;
+                if (e == "물")   return BLUE;
+                if (e == "흙")   return GREEN;
+                if (e == "바람") return YELLOW;
+                return WHITE;
+            };
+
+            // 헤더 박스
+            cout << BOLD << CYAN;
+            cout << "\n  ╔═══════════════════╗\n";
+            cout <<   "  ║  ★ 전리품 획득 ★  ║\n";
+            cout <<   "  ╚═══════════════════╝\n" << CLR;
+            cout << "\n";
+
+            // 획득한 원소 표시
+            cout << "  획득한 원소 : " << BOLD << elemColor(dropElem)
+                 << "【 " << dropElem << " 】" << CLR << "\n\n";
 
             // 1. 이미 ++ 있으면 더 이상 진화 불가
             for (int i = 0; i < 3; i++) {
                 if (player.slots[i] == plus2) {
-                    cout << ">> [" << plus2 << "] 속성은 더 이상 진화할 수 없습니다.\n";
-                    cout << ">> [" << dropElem << "] 원소가 흩어집니다...\n";
+                    cout << BOLD << YELLOW << "  !! [" << plus2 << "] 속성은 이미 최고 단계입니다.\n" << CLR;
+                    cout << "     [" << dropElem << "] 원소가 흩어집니다...\n";
                     handled = true;
                     break;
                 }
@@ -171,7 +194,10 @@ int main() {
                 for (int i = 0; i < 3; i++) {
                     if (player.slots[i] == plus1) {
                         player.slots[i] = plus2;
-                        cout << ">> [" << plus1 << "] 속성이 [" << plus2 << "] 로 최종 진화!\n";
+                        cout << BOLD << elemColor(dropElem) << "  == FINAL EVOLUTION! ==\n" << CLR;
+                        cout << "  " << BOLD << "[ " << plus1 << " ]" << CLR
+                             << "  ->  " << BOLD << elemColor(dropElem) << "[ " << plus2 << " ]" << CLR
+                             << "  최종 진화!\n";
                         handled = true;
                         break;
                     }
@@ -183,7 +209,10 @@ int main() {
                 for (int i = 0; i < 3; i++) {
                     if (player.slots[i] == dropElem) {
                         player.slots[i] = plus1;
-                        cout << ">> [" << dropElem << "] 속성이 [" << plus1 << "] 로 진화!\n";
+                        cout << BOLD << elemColor(dropElem) << "  >> EVOLUTION!\n" << CLR;
+                        cout << "  " << BOLD << "[ " << dropElem << " ]" << CLR
+                             << "  ->  " << BOLD << elemColor(dropElem) << "[ " << plus1 << " ]" << CLR
+                             << "  진화!\n";
                         handled = true;
                         break;
                     }
@@ -195,7 +224,9 @@ int main() {
                 for (int i = 0; i < 3; i++) {
                     if (player.slots[i] == "") {
                         player.slots[i] = dropElem;
-                        cout << ">> [" << dropElem << "] 원소를 새로 획득!\n";
+                        cout << BOLD << GREEN << "  ★ 새 원소 획득!\n" << CLR;
+                        cout << "  " << BOLD << elemColor(dropElem) << "[ " << dropElem << " ]" << CLR
+                             << " 원소를 슬롯에 장착!\n";
                         handled = true;
                         break;
                     }
@@ -204,29 +235,63 @@ int main() {
 
             // 5. 슬롯 꽉 찼을 때 교체
             if (!handled) {
-                cout << ">> 슬롯이 가득 찼습니다! 새 원소: [" << dropElem << "]\n\n";
-                cout << "1: " << player.slots[0] << "  2: " << player.slots[1] << "  3: " << player.slots[2] << "\n";
-                cout << "교체할 슬롯 클릭 (화면 우측 클릭 시 원소 포기) >> ";
-                
+                cout << BOLD << YELLOW << "  ▶ 슬롯이 가득 찼습니다!" << CLR;
+                cout << "  새 원소: " << BOLD << elemColor(dropElem)
+                     << "[ " << dropElem << " ]" << CLR << "\n\n";
+                cout << "  교체할 슬롯을 클릭하세요.  (가장 오른쪽 클릭 = 포기)\n\n";
+
+                string s0 = player.slots[0].empty() ? "비어있음" : player.slots[0];
+                string s1 = player.slots[1].empty() ? "비어있음" : player.slots[1];
+                string s2 = player.slots[2].empty() ? "비어있음" : player.slots[2];
+
+                // 표시 너비 계산 (Korean=2, ASCII=1)
+                auto dispw = [](const string& s) {
+                    int w = 0;
+                    for (unsigned char c : s)
+                        if ((c & 0xC0) != 0x80)
+                            w += (c >= 0x80) ? 2 : 1;
+                    return w;
+                };
+                // 박스 내부 셀 문자열 생성 (4 spaces + 색상 + 내용 + 패딩)
+                auto slotCell = [&](const string& s, const char* color, int innerW) {
+                    int pad = innerW - 4 - dispw(s);
+                    if (pad < 0) pad = 0;
+                    return string("    ") + BOLD + color + s + CLR + string(pad, ' ');
+                };
+
+                // 박스 상단 테두리
+                cout << "  ┌──────────────────┐┌──────────────────┐┌──────────────────┐┌─────────────┐\n";
+                // 슬롯 레이블 행
+                cout << "  │   [ 슬롯  1 ]    ││   [ 슬롯  2 ]    ││   [ 슬롯  3 ]    ││  [ 포기 ]   │\n";
+                // 슬롯 내용 행
+                cout << "  │" << slotCell(s0, elemColor(s0), 18)
+                     << "││" << slotCell(s1, elemColor(s1), 18)
+                     << "││" << slotCell(s2, elemColor(s2), 18)
+                     << "││    포기     │\n";
+                // 박스 하단 테두리
+                cout << "  └──────────────────┘└──────────────────┘└──────────────────┘└─────────────┘\n";
+
                 int replaceIdx = -1;
                 while (replaceIdx == -1) {
                     COORD pos = getMouseClick();
-                    if (pos.X < 20) replaceIdx = 1;
-                    else if (pos.X < 40) replaceIdx = 2;
-                    else if (pos.X < 60) replaceIdx = 3;
-                    else replaceIdx = 0;
+                    if (pos.X <= 21)       replaceIdx = 1;
+                    else if (pos.X <= 41)  replaceIdx = 2;
+                    else if (pos.X <= 61)  replaceIdx = 3;
+                    else                   replaceIdx = 0;
                 }
-                
+
+                cout << "\n";
                 if (replaceIdx >= 1 && replaceIdx <= 3) {
-                    cout << "\n[" << player.slots[replaceIdx - 1] << "] 버리고 [" << dropElem << "] 장착\n";
+                    cout << "  " << BOLD << RED << "[ " << player.slots[replaceIdx - 1] << " ]" << CLR
+                         << " 버리고 " << BOLD << elemColor(dropElem) << "[ " << dropElem << " ]" << CLR << " 장착!\n";
                     player.slots[replaceIdx - 1] = dropElem;
                 }
                 else {
-                    cout << "\n원소 획득 포기\n";
+                    cout << "  " << BOLD << "원소 획득 포기...\n" << CLR;
                 }
             }
 
-            cout << "\n아무 곳이나 클릭하면 맵으로 돌아갑니다...";
+            cout << "\n  아무 곳이나 클릭하면 맵으로 돌아갑니다...";
             waitAnyClick();
         }
 
@@ -234,7 +299,6 @@ int main() {
         if (gameMap[player.row][player.col] == WELL) {
             player.hp = min(player.hp + 30, player.maxHp);
             player.mp = min(player.mp + 20, player.maxMp);
-            waitAnyClick();
             showHeal(player);
         }
 

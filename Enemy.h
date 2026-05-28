@@ -1,6 +1,6 @@
 #pragma once
 #define JSON_HAS_CPP_17 0
-#include "character.h"
+#include "Character.h"
 #include "Define.h"
 
 #include "include/json.hpp"

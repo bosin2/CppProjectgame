@@ -121,7 +121,7 @@ void drawMap(Player& player) {
                     }
                     break;
                 case WELL:  cout << WB << "  " << CLR; break;
-                case BOSS:  cout << CYAN << "B " << CLR; break;
+                case BOSS:  cout << BOLD << PINK << "★ " << CLR; break;
                 case VISIT: cout << "  ";                 break; // 지나온 타일 공백
                 }
             }
@@ -134,11 +134,12 @@ void drawMap(Player& player) {
     for (int c = 1; c < COLS; c++) cout << "┻━━";
     cout << "┛\n\n";
 
-    cout << RED << "  ■" << CLR << " 불  ";
-    cout << BLUE << "  ■" << CLR << " 물  ";
-    cout << GREEN << "  ■" << CLR << " 흙  ";
-    cout << YELLOW << "  ■" << CLR << " 바람  ";
-    cout << WHITE << "  ■" << CLR << " 우물\n";
+    cout << RB << "  " << CLR << " 불  ";
+    cout << BB << "  " << CLR << " 물  ";
+    cout << GB << "  " << CLR << " 흙  ";
+    cout << YB << "  " << CLR << " 바람  ";
+    cout << WB << "  " << CLR << " 우물  ";
+    cout << BOLD << PINK << "★ " << CLR << " 보스\n";
 
     cout << "\n  이동:  1(↗)  2(→)  3(↘)\n";
 }
