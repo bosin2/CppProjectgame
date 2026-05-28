@@ -1,13 +1,13 @@
 #include "Scene.h"
+#include "MouseInput.h"
 
-//장면출력함수
 void drawScene(string art[], int artC, string txt) {
-    cout << CLEAR; //화면지우기
+    cout << CLEAR;
 
     cout << "\n";
 
     for (int i = 0; i < artC; i++)
-        cout << art[i] << "\n"; //아스키아트줄만큼 출력
+        cout << art[i] << "\n";
 
     for (int i = 0; i < 50; i++) cout << "─";
     cout << "\n";
@@ -18,9 +18,9 @@ void drawScene(string art[], int artC, string txt) {
 
     cout << "\n\n";
 
-    cout << "➤ Enter ";
+    cout << "➤ 아무 곳이나 클릭하세요 ";
 
-    cin.get();
+    waitAnyClick(); 
 }
 
 void showTitle() {
@@ -42,14 +42,11 @@ void showTitle() {
     cout << "          8888' Y88'   `88888P8 dP       dP       dP `88888P' dP       \n";
     cout << "          ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo\n";
     cout << "\n\n\n\n\n";
-    cout << "               1. 시작하기 \n";
-    cout << "               2. 설명보기 \n\n\n";
-    cout << "                ➤  ";
-
+    cout << "                  시작하기 \n";
+    cout << "                  설명보기 \n\n\n";
 }
 
 void showPrologue() {
-
     string art1[] = {
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡗⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⠀⠀⠀",
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡯⠀⠀⠀",
@@ -71,12 +68,11 @@ void showPrologue() {
     drawScene(art1, art1Size, "인간 B : 음... 계속 이 상태면 정말 큰일 날지도.");
     drawScene(art1, art1Size, "인간 A : 왜 ? ");
 
-
     string art2[] = {
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢸⣿⠟⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
-    "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⢈⣯⠀⣹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+    "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ាក⠃⢈⣯⠀⣹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀⢨⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣏⠀⠀⠀⠀⣹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢸⣿⠄⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
@@ -93,8 +89,6 @@ void showPrologue() {
     drawScene(art2, art2Size, "인간 A : 왜 모이는건데 ?");
     drawScene(art2, art2Size, "인간 B : 아마 무언가가 부르고 있는게 아닐까싶어");
     drawScene(art2, art2Size, "인간 A : 근데 그게 왜 큰일이 돼 ?");
-
-
 
     string art3[] = {
     "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⠀⠀⠀⠀⠀⣸⣿⡿⠀⠀⠀⠀⠀ ⠀⠀⢿⣿",
@@ -117,7 +111,6 @@ void showPrologue() {
     drawScene(art3, art3Size, "??? : ...))))");
     drawScene(art3, art3Size, "인간 A : 저기 뭔가 있는데 ??");
 
-
     string art4[] = {
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
@@ -134,16 +127,22 @@ void showPrologue() {
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
     };
     int art4Size = sizeof(art4) / sizeof(art4[0]);
-
     drawScene(art4, art4Size, "인간 A : B, 봐봐 저거 슬라임 아니야 ?");
     drawScene(art4, art4Size, "인간 B : 슬라임 ? 설마... 들어간 건가 ?");
 }
-//설명
-void showExplan() {
 
+// 설명창
+void showExplan() {
+    cout << CLEAR;
+    cout << "\n\n   ======= [ 게임 설명 ] =======\n\n";
+    cout << "   - 원소를 수집하고 진화시켜 정령들을 무찌르세요.\n";
+    cout << "   - 마우스 클릭만으로 모든 조작이 가능합니다.\n";
+    cout << "   - 상성에 맞는 원소 공격은 피해가 2배가 됩니다.\n\n";
+    cout << "   ➤ 아무 곳이나 클릭하면 타이틀로 돌아갑니다. ";
+    waitAnyClick();
 }
 
-//원소선택
+// 원소 선택
 void startChoice() {
     cout << CLEAR;
     cout << "\n";
@@ -170,15 +169,14 @@ void startChoice() {
     for (int i = 0; i < 50; i++) cout << "─";
     cout << "\n\n";
 
-    cout << "======= 당신의 속성을 선택하세요 =======\n\n";
-    cout << "  1. 불 " << RED << "██" << CLR << "  2. 물 " << BLUE << "██" << CLR << "  3. 흙 " << YELLOW << "██" << CLR << "  4. 바람 " << GREEN << " ██" << CLR << "\n\n\n\n";
-    cout << "➤ ";
+    cout << "======= 당신의 속성을 선택하세요 (해당 원소를 클릭하세요) =======\n\n";
+    cout << "  [ 불 ] " << RED << "██" << CLR << "   [ 물 ] " << BLUE << "██" << CLR << "   [ 흙 ] " << YELLOW << "██" << CLR << "   [ 바람 ] " << GREEN << " ██" << CLR << "\n\n\n\n";
 }
+
 void showHeal(Player& player) {
     string art[] = {
     "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
     "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-
     "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
     "⣤⣠⣀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
     "⠙⠙⠛⠻⢿⣶⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀  ⠀⢀⡀⠀⠀⠀⠀⠀⣀⣀⠀⠀⠀⠀⠀⢀⡀⠀⠀⠀⠀⠀⠀⠀",
@@ -198,15 +196,14 @@ void showHeal(Player& player) {
     drawScene(art, artSize, "깨끗해지는 기분이 듭니다.");
     drawScene(art, artSize, "HP와 MP가 회복 되었습니다 !");
 }
-void showEnd(Player& player) {
 
-    // 슬라임
+void showEnd(Player& player) {
     string art1[] = {
     "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁⠀⠀⣿⣿⣿",
     "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⠀⠀⢨⣿⣿⣿",
     "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣦⣴⣾⣿⣧⢀⣀⡀⠀⠀⠀⠀⠀⠀⠈⢿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠀⠀⠀⣸⣿⣿⣿",
     "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠛⠟⠿⠿⣿⣿⣿⣿⡃⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣿⣿⣿⣿⡇⠀⠀⢀⣿⣿⣿⣿",
-    "⠀⠀⠀⠀⠀⠀⠀⣀⣤⣴⣶⣶⣶⣦⣤⣄⠁⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣿⣿⣿⣿⠁⠀⠀⣼⣿⣿⣿⣿",
+    "⠀⠀⠀⠀⠀⠀⠀⣀⣤⣴⣶⣶⣶⣦⣤⣄⠁⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣿⣿⣿⣿⠀⠀⣼⣿⣿⣿⣿",
     "⠀⠀⠀⠀⢀⣴⣾⣿⣿⣿⣿⣿⣿⣯⡉⠙⠻⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⣿⣿⣿⡏⠀⠀⢠⣿⣿⣿⣿⣿",
     "⠀⠀⠀⣠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡀⠻⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢻⣿⠃⠀⠀⢼⣿⣿⣿⣿⣿",
     "⠀⠀⢠⣿⣟⢙⣿⣿⣿⣿⣿⠛⣿⣿⣿⣿⣿⣿⡄⠘⣷⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠀⠀⠀⣿⣿⣿⡿⠿⠿",
@@ -221,8 +218,6 @@ void showEnd(Player& player) {
     drawScene(art1, art1Size, "당신은 모든 전투를 마치고 탑에서 걸어나왔습니다.");
     drawScene(art1, art1Size, "당신은 모든 전투를 마치고 탑에서 걸어나왔습니다.");
 
-
-    // 슬라임
     string art2[] = {
     "⠑⠨⡙⠦⡀⠑⠕⢕⢄⠘⠄⠈⢆⠈⢆⠘⡀⠁⠘⠄⠂⠐⠀⠏⠘⢀⠓⡐⠀⠌⠢⡢⠡⠊⡢⠊⡈⠔⢁⡠⣞⠽⡪⣕",
     "⠳⢦⣀⠁⠈⠢⢈⠀⠅⠑⠈⠢⠀⠣⠈⠆⠐⠀⠀⠅⠨⢐⠠⠁⠁⠄⡑⠀⠀⠑⠐⠈⡈⠀⡀⠊⡠⢒⠕⠊⡢⢑⡪⣒",
@@ -243,7 +238,6 @@ void showEnd(Player& player) {
     drawScene(art2, art2Size, "인간들 : 대단해 슬라임 ! 네가 세상을 구했어 !");
     drawScene(art2, art2Size, "슬라임 : ? )))");
 
-    // 흑백
     string art3[] = {
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
@@ -263,7 +257,6 @@ void showEnd(Player& player) {
     drawScene(art3, art3Size, "당신은 인간들과 함께 마을로 갔습니다.");
     drawScene(art3, art3Size, "며칠 뒤...");
 
-    // 동상
     string art4[] = {
     "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⣠⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
     "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⢽⣶⣾⣿⣿⣾⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
@@ -302,11 +295,12 @@ void showEnd(Player& player) {
         << (player.slots[1] == "" ? "-" : player.slots[1]) << "] ["
         << (player.slots[2] == "" ? "-" : player.slots[2]) << "]\n\n";
     cout << "  플레이해주셔서 감사합니다!\n\n";
+    cout << "  ➤ 아무 곳이나 클릭하면 종료합니다. ";
 
-    cin.get();
+    waitAnyClick(); // 마우스 클릭 대기
 }
-void showDie() {
 
+void showDie() {
     string art1[] = {
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠉⠙⢿⣿⣿⣿",
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠿⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⠬⠦⢤⠀⣿⣿⣿",
@@ -325,7 +319,6 @@ void showDie() {
     int art1Size = sizeof(art1) / sizeof(art1[0]);
     drawScene(art1, art1Size, "당신은 전투에서 죽고 말았습니다.");
     drawScene(art1, art1Size, "당신은 전투에서 죽고 말았습니다.");
-
 
     string art2[] = {
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
@@ -365,10 +358,11 @@ void showDie() {
     drawScene(art3, art3Size, "어쩔수 없죠 고작 슬라임이잖아요");
     drawScene(art3, art3Size, "자책하지 마세요. 다음에는 좀 더 열심히 해보길");
 
-
     cout << RED << BOLD;
     cout << "\n\n  ====================================================\n";
     cout << "                    게임 오버...\n";
     cout << "  ====================================================\n\n" << CLR;
-
+    cout << "  ➤ 아무 곳이나 클릭하면 메인 화면으로 돌아갑니다. ";
+    
+    waitAnyClick(); // 마우스 클릭 대기
 }

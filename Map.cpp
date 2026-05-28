@@ -69,7 +69,7 @@ void drawStartMap() {
     for (int c = 1; c < COLS; c++) cout << "┻━━";
     cout << "┛\n";
 
-    cout << "\n  시작 위치 선택 (1~5): ";
+    cout << "\n  시작 위치 선택 ";
 }
 
 // 메인 맵 화면
