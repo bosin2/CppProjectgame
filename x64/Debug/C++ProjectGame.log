@@ -1,9 +1,10 @@
 ﻿  Battle.cpp
   BattleAnim.cpp
   Enemy.cpp
-  main.cpp
   Map.cpp
   Player.cpp
   Scene.cpp
+  main.cpp
   코드를 생성하고 있습니다...
+  LINK : C:\Users\whghk\dev-projects\CSharp\C++ProjectGame\x64\Debug\C++ProjectGame.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
   C++ProjectGame.vcxproj -> C:\Users\whghk\dev-projects\CSharp\C++ProjectGame\x64\Debug\C++ProjectGame.exe
