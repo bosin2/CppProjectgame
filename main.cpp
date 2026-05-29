@@ -99,7 +99,7 @@ int main() {
     // 게임 루프
     while (true) {
         drawMap(player);
-        cout << "\n  화면의 맵 타일이나 이동 방향을 클릭하여 이동하세요.\n";
+        cout << "\n  화면의 맵 타일을 눌러 이동하세요.\n";
         
         char input = '0';
         while (input == '0') {
@@ -150,14 +150,14 @@ int main() {
             
             Enemy enemy = loadEnemy(elemName, grade);
             
-            // ── [난이도 보정] 맵 진행도(player.col)에 따른 몬스터 강화 ──
+            // ── 맵 진행도에 따른 몬스터 강화 ──
             int diff = player.col; 
             enemy.maxHp += (diff * 15);
             enemy.hp = enemy.maxHp;
             enemy.attack += (diff * 1);
             enemy.defense += (diff / 3);
 
-            // 몬스터 속성별 개성(스탯) 부여
+            // 몬스터 속성별 스탯 부여
             if (enemy.element == "fire") {
                 enemy.bonusDamage += (diff / 2);
                 enemy.defense += 2;
@@ -264,16 +264,12 @@ int main() {
                     return string("    ") + BOLD + color + s + CLR + string(pad, ' ');
                 };
 
-                // 박스 상단 테두리
                 cout << "  ┌──────────────────┐┌──────────────────┐┌──────────────────┐┌─────────────┐\n";
-                // 슬롯 레이블 행
                 cout << "  │   [ 슬롯  1 ]    ││   [ 슬롯  2 ]    ││   [ 슬롯  3 ]    ││  [ 포기 ]   │\n";
-                // 슬롯 내용 행
                 cout << "  │" << slotCell(s0, elemColor(s0), 18)
                      << "││" << slotCell(s1, elemColor(s1), 18)
                      << "││" << slotCell(s2, elemColor(s2), 18)
                      << "││    포기     │\n";
-                // 박스 하단 테두리
                 cout << "  └──────────────────┘└──────────────────┘└──────────────────┘└─────────────┘\n";
 
                 int replaceIdx = -1;
@@ -302,7 +298,7 @@ int main() {
             waitAnyClick();
         }
 
-        // 우물 타일 (★ 수정한 체력+60, 마나+30 밸런스 완전 유지)
+        // 우물 타일 
         if (gameMap[player.row][player.col] == WELL) {
             player.hp = min(player.hp + 60, player.maxHp);
             player.mp = min(player.mp + 30, player.maxMp);
