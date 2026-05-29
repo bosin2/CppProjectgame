@@ -75,6 +75,18 @@ Boss loadBoss() {
 
     for (auto& line : bd["ascii"])
         b.ascii.push_back(line);
+    if (bd.contains("phaseAscii") && bd["phaseAscii"].is_array()) {
+        for (auto& phase : bd["phaseAscii"]) {
+            vector<string> art;
+            for (auto& line : phase)
+                art.push_back(line);
+            if (!art.empty())
+                b.phaseAscii.push_back(art);
+        }
+
+        if (!b.phaseAscii.empty())
+            b.ascii = b.phaseAscii[0];
+    }
 
     // 원소별 패턴 4세트 로드
     for (auto& p : bd["firePatterns"])  b.firePatterns.push_back(makePattern(p));
@@ -92,3 +104,6 @@ Boss loadBoss() {
 
     return b;
 }
+
+
+

@@ -3,6 +3,20 @@
 #include <windows.h>
 #include <algorithm>
 using namespace std;
+static int displayWidth(const string& text) {
+    int width = 0;
+    for (size_t i = 0; i < text.size();) {
+        unsigned char c = static_cast<unsigned char>(text[i]);
+        width++;
+
+        if (c < 0x80) i += 1;
+        else if ((c & 0xE0) == 0xC0) i += 2;
+        else if ((c & 0xF0) == 0xE0) i += 3;
+        else if ((c & 0xF8) == 0xF0) i += 4;
+        else i += 1;
+    }
+    return width;
+}
 
 // 지정 영역을 공백으로 지우기
 void clearArea(int row, int col, int width, int height) {
@@ -31,8 +45,8 @@ void shakeArt(int row, int col, vector<string>& ascii, const char* color,
     // 지울 영역 너비 계산용
     int maxWidth = 0;
     for (int i = 0; i < (int)ascii.size(); i++) {
-        if ((int)ascii[i].size() > maxWidth)
-            maxWidth = (int)ascii[i].size();
+        if (displayWidth(ascii[i]) > maxWidth)
+            maxWidth = displayWidth(ascii[i]);
     }
     int height = (int)ascii.size();
 
@@ -62,8 +76,8 @@ void moveArt(int row, int startCol, int endCol, vector<string>& ascii,
 
     int maxWidth = 0;
     for (int i = 0; i < (int)ascii.size(); i++) {
-        if ((int)ascii[i].size() > maxWidth)
-            maxWidth = (int)ascii[i].size();
+        if (displayWidth(ascii[i]) > maxWidth)
+            maxWidth = displayWidth(ascii[i]);
     }
     int height = (int)ascii.size();
 
@@ -247,8 +261,8 @@ void animEnemyHit(Enemy& enemy) {
     // 아스키아트 최대 너비 계산 (지울 영역용)
     int maxWidth = 0;
     for (int i = 0; i < (int)enemy.ascii.size(); i++) {
-        if ((int)enemy.ascii[i].size() > maxWidth)
-            maxWidth = (int)enemy.ascii[i].size();
+        if (displayWidth(enemy.ascii[i]) > maxWidth)
+            maxWidth = displayWidth(enemy.ascii[i]);
     }
     int height = (int)enemy.ascii.size();
 
@@ -346,8 +360,8 @@ void animEnemyAttack(Enemy& enemy) {
     const char* color = getEnemyColor(enemy.element);
     vector<string> bullet = getEnemyProjectile(enemy.element);
 
-    // 몬스터 왼쪽 바깥(col 48)에서 출발 → 슬라임(col 12)
-    moveArt(10, 48, 12, bullet, color, 25);
+    // 몬스터 왼쪽 바깥(col 42)에서 출발 → 슬라임(col 12)
+    moveArt(10, 42, 12, bullet, color, 25);
 
     // 착탄 이펙트
     vector<string> impact = { " *  ", "* * *", " *  " };
@@ -432,8 +446,8 @@ void animEnemyDie(Enemy& enemy) {
 
     int maxWidth = 0;
     for (int i = 0; i < height; i++) {
-        if ((int)art[i].size() > maxWidth)
-            maxWidth = (int)art[i].size();
+        if (displayWidth(art[i]) > maxWidth)
+            maxWidth = displayWidth(art[i]);
     }
 
     // 글자 흩어짐 (3프레임)
@@ -544,3 +558,5 @@ void animComboAttack(Player& player, string comboName) {
     drawSlime(player);
     cout.flush();
 }
+
+

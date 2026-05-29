@@ -20,6 +20,9 @@ public:
     vector<Pattern> earthPatterns;
     vector<Pattern> windPatterns;
 
+    // 페이즈별 보스 아트 (페이즈가 넘어갈 때 머리가 하나씩 사라짐)
+    vector<vector<string>> phaseAscii;
+
     Boss() {
         attack  = 20;
         defense = 5;
@@ -59,3 +62,6 @@ public:
 Boss loadBoss();
 
 bool startBossBattle(Player& player, Boss& boss);
+
+
+

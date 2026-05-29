@@ -65,26 +65,26 @@ void drawBattle(Player& player, Enemy& enemy, string currentMessage) {
     
     gotoxy(2, pCol); cout << "┃" << clearLine; 
     gotoxy(2, pCol); cout << "┃ 슬라임"; 
-    gotoxy(2, pCol + 44); cout << "┃"; 
+    gotoxy(2, pCol + 43); cout << "┃"; 
     
     gotoxy(3, pCol); cout << "┃" << clearLine; 
     gotoxy(3, pCol); cout << "┃ HP: "; drawHpBar(player.hp, player.maxHp); 
-    gotoxy(3, pCol + 44); cout << "┃";
+    gotoxy(3, pCol + 43); cout << "┃";
     
     gotoxy(4, pCol); cout << "┃" << clearLine; 
     gotoxy(4, pCol); cout << "┃ MP: "; drawHpBar(player.mp, player.maxMp); 
-    gotoxy(4, pCol + 44); cout << "┃";
+    gotoxy(4, pCol + 43); cout << "┃";
     
     gotoxy(5, pCol); cout << "┃" << clearLine; 
     gotoxy(5, pCol); cout << "┃ 슬롯: [" << (player.slots[0]==""?"-":player.slots[0]) << "] [" 
                                   << (player.slots[1]==""?"-":player.slots[1]) << "] [" 
                                   << (player.slots[2]==""?"-":player.slots[2]) << "]"; 
-    gotoxy(5, pCol + 44); cout << "┃";
+    gotoxy(5, pCol + 43); cout << "┃";
     
     gotoxy(6, pCol); cout << "┃" << clearLine; 
     gotoxy(6, pCol); cout << "┃ 방어:" << player.defense << " 딜:" << player.bonusDamage 
                        << " 흡:" << player.lifeSteal << "% 회피:" << player.evadeChance << "%"; 
-    gotoxy(6, pCol + 44); cout << "┃";
+    gotoxy(6, pCol + 43); cout << "┃";
     
     gotoxy(7, pCol); cout << "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
 
@@ -93,11 +93,11 @@ void drawBattle(Player& player, Enemy& enemy, string currentMessage) {
     
     gotoxy(2, eCol); cout << "┃" << clearLine; 
     gotoxy(2, eCol); cout << "┃ <" << enemy.grade << " 정령> " << enemy.name; 
-    gotoxy(2, eCol + 44); cout << "┃";
+    gotoxy(2, eCol + 43); cout << "┃";
     
     gotoxy(3, eCol); cout << "┃" << clearLine; 
     gotoxy(3, eCol); cout << "┃ HP: "; drawHpBar(enemy.hp, enemy.maxHp); 
-    gotoxy(3, eCol + 44); cout << "┃";
+    gotoxy(3, eCol + 43); cout << "┃";
     
     gotoxy(4, eCol); cout << "┃" << clearLine; 
     gotoxy(4, eCol); cout << "┃ 방어:" << enemy.defense << " 딜:" << enemy.bonusDamage 
@@ -110,10 +110,10 @@ void drawBattle(Player& player, Enemy& enemy, string currentMessage) {
         Pattern& nextPat = enemy.patterns[enemy.nextPattern];
         cout << nextPat.name << " 준비 중 (" << nextPat.damage + enemy.bonusDamage << ")";
     }
-    gotoxy(5, eCol + 44); cout << "┃";
+    gotoxy(5, eCol + 43); cout << "┃";
     
     gotoxy(6, eCol); cout << "┃" << clearLine; 
-    gotoxy(6, eCol + 44); cout << "┃"; 
+    gotoxy(6, eCol + 43); cout << "┃";
     
     gotoxy(7, eCol); cout << "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
 
@@ -160,8 +160,8 @@ void drawSkillMenu(Player& player, int mode) {
         gotoxy(20, 1); cout << "┃   " << BOLD << "[ 조합 공격 목록  (MP: 5) ]" << CLR << "             ┃"; 
         gotoxy(21, 1); cout << "┃  " << (hasElement(player, "불") && hasElement(player, "물") ? string(CYAN) + "▶ [1] 증기 폭발 (불+물)  " + CLR : string(WHITE) + "  [1] [잠금]          " + CLR) << "               ┃";
         gotoxy(22, 1); cout << "┃  " << (hasElement(player, "불") && hasElement(player, "흙") ? string(CYAN) + "▶ [2] 용암 투척 (불+흙)  " + CLR : string(WHITE) + "  [2] [잠금]          " + CLR) << "               ┃";
-        gotoxy(23, 1); cout << "┃  " << (hasElement(player, "불") && hasElement(player, "바람") ? string(CYAN) + "▶ [3] 화염 돌풍 (불+바람)" + CLR : string(WHITE) + "  [3] [잠금]          " + CLR) << "               ┃";
-        gotoxy(24, 1); cout << "┃  " << (hasElement(player, "물") && hasElement(player, "흙") ? string(CYAN) + "▶ [4] 진흙 늪   (물+흙)  " + CLR : string(WHITE) + "  [4] [잠금]          " + CLR) << "               ┃";
+        gotoxy(23, 1); cout << "┃  " << (hasElement(player, "불") && hasElement(player, "바람") ? string(CYAN) + "▶ [3] 화염 돌풍 (불+바람)" + CLR : string(WHITE) + "  [3] [잠금]          " + CLR) << "              ┃";
+        gotoxy(24, 1); cout << "┃  " << (hasElement(player, "물") && hasElement(player, "흙") ? string(CYAN) + "▶ [4] 진흙 늪   (물+흙)  " + CLR : string(WHITE) + "  [4] [잠금]          " + CLR) << "                ┃";
         gotoxy(25, 1); cout << "┃  " << (hasElement(player, "물") && hasElement(player, "바람") ? string(CYAN) + "▶ [5] 빙결 화살 (물+바람)" + CLR : string(WHITE) + "  [5] [잠금]          " + CLR) << "               ┃";
         gotoxy(26, 1); cout << "┃  " << (hasElement(player, "흙") && hasElement(player, "바람") ? string(CYAN) + "▶ [6] 모래 폭풍 (흙+바람)" + CLR : string(WHITE) + "  [6] [잠금]          " + CLR) << "               ┃";
         gotoxy(27, 1); cout << "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
@@ -585,7 +585,11 @@ bool startBossBattle(Player& player, Boss& boss) {
                 int currentEvade = boss.evadeChance;
 
                 boss.nextPhase();
-                
+                if (!boss.phaseAscii.empty()) {
+                    int artIdx = boss.phase - 1;
+                    if (artIdx >= 0 && artIdx < (int)boss.phaseAscii.size())
+                        boss.ascii = boss.phaseAscii[artIdx];
+                }                
                 boss.turnCount = 0;
                 boss.elemIndex = currentElemIdx;
                 boss.element = currentElem;
@@ -704,3 +708,5 @@ bool startBossBattle(Player& player, Boss& boss) {
 
     return player.isAlive();
 }
+
+
