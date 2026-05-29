@@ -102,7 +102,7 @@ void drawBattle(Player& player, Enemy& enemy, string currentMessage) {
     gotoxy(4, eCol); cout << "┃" << clearLine; 
     gotoxy(4, eCol); cout << "┃ 방어:" << enemy.defense << " 딜:" << enemy.bonusDamage 
                        << " 흡:" << enemy.lifeSteal << "% 회피:" << enemy.evadeChance << "%"; 
-    gotoxy(4, eCol + 44); cout << "┃";
+    gotoxy(4, eCol + 43); cout << "┃";
     
     gotoxy(5, eCol); cout << "┃" << clearLine; 
     gotoxy(5, eCol); cout << "┃ ";
