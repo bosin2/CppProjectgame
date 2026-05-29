@@ -12,19 +12,19 @@ static json loadEnemyData() {
 
 static Pattern makePattern(const json& p) {
     Pattern pat;
-    pat.name = p["name"];
+    pat.name   = p["name"];
     pat.damage = p["damage"];
-    pat.type = p["type"];
+    pat.type   = p["type"];
     return pat;
 }
 
-// JSON에서 원소·등급으로 몬스터 로드
+// json에서 원소·등급으로 몬스터 로드
 Enemy loadEnemy(string element, string grade) {
     json data = loadEnemyData();
 
     Enemy e;
     e.element = element;
-    e.grade = grade;
+    e.grade   = grade;
 
     if (!data.contains(element) || !data[element].is_array()) {
         throw runtime_error("Enemy.json에 원소 데이터가 없습니다: " + element);
@@ -32,11 +32,9 @@ Enemy loadEnemy(string element, string grade) {
 
     for (auto& em : data[element]) {
         if (em["grade"] == grade) {
-            e.name = em["name"];
-            e.hp = em["hp"];
+            e.name  = em["name"];
+            e.hp    = em["hp"];
             e.maxHp = em["hp"];
-            e.grade = em["grade"];
-            e.element = element;
 
             for (auto& line : em["ascii"])
                 e.ascii.push_back(line);
@@ -46,9 +44,9 @@ Enemy loadEnemy(string element, string grade) {
                     e.ascii_hit.push_back(line);
             }
 
-            for (auto& p : em["patterns"]) {
+            for (auto& p : em["patterns"])
                 e.patterns.push_back(makePattern(p));
-            }
+
             break;
         }
     }
@@ -58,32 +56,39 @@ Enemy loadEnemy(string element, string grade) {
     return e;
 }
 
-// JSON에서 보스 데이터 로드
+// json에서 보스 데이터 로드 (원소별 패턴 4세트 포함)
 Boss loadBoss() {
     json data = loadEnemyData();
 
-    Boss b;
     if (!data.contains("boss") || !data["boss"].is_array() || data["boss"].empty()) {
         throw runtime_error("Enemy.json에 보스 데이터가 없습니다.");
     }
 
-    auto& bossData = data["boss"][0];  // 첫 번째 보스 데이터
+    auto& bd = data["boss"][0];
 
-    b.name = bossData["name"];
-    b.grade = bossData["grade"];
-    b.hp = bossData["hp"];
-    b.maxHp = bossData["hp"];
-    b.element = "all";
+    Boss b;
+    b.name  = bd["name"];
+    b.grade = bd["grade"];
+    b.hp    = bd["hp"];
+    b.maxHp = bd["hp"];
+    b.element = "fire";   // 시작 원소
 
-    for (auto& line : bossData["ascii"])
+    for (auto& line : bd["ascii"])
         b.ascii.push_back(line);
 
-    for (auto& p : bossData["patterns"]) {
-        b.patterns.push_back(makePattern(p));
+    // 원소별 패턴 4세트 로드
+    for (auto& p : bd["firePatterns"])  b.firePatterns.push_back(makePattern(p));
+    for (auto& p : bd["waterPatterns"]) b.waterPatterns.push_back(makePattern(p));
+    for (auto& p : bd["earthPatterns"]) b.earthPatterns.push_back(makePattern(p));
+    for (auto& p : bd["windPatterns"])  b.windPatterns.push_back(makePattern(p));
+
+    if (b.firePatterns.empty() || b.waterPatterns.empty() ||
+        b.earthPatterns.empty() || b.windPatterns.empty()) {
+        throw runtime_error("Enemy.json 보스의 원소별 패턴이 비어 있습니다.");
     }
-    if (b.patterns.empty()) {
-        throw runtime_error("Enemy.json의 보스 패턴이 비어 있습니다.");
-    }
+
+    // 시작 패턴은 불 패턴
+    b.patterns = b.firePatterns;
 
     return b;
 }
