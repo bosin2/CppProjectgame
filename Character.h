@@ -2,31 +2,31 @@
 #include <string>
 using namespace std;
 
-// 전투 캐릭터 기반 클래스 (Player, Enemy, Boss 상속)
 class Character {
 public:
     string name;
 
     int hp = 0;
     int maxHp = 0;
-    int attack = 10;   // 기본 공격력
-    int defense = 0;    // 기본 방어력 (데미지 감소량)
+    int attack = 10;
+    
+    // [통합된 공통 스탯]
+    int defense = 0;
+    int lifeSteal = 0;
+    int evadeChance = 0;
+    int bonusDamage = 0; 
 
     bool isDefending = false;
 
-    // 방어 실행
-    void defend() {
-        isDefending = true;
-    }
+    void defend() { isDefending = true; }
 
-    // 데미지 처리 (방어 중이면 절반)
     void takeDamage(int dmg) {
-        if (isDefending) dmg /= 2;
-        hp -= dmg;
+        int actualDmg = dmg - defense;
+        if (actualDmg < 1) actualDmg = 1;
+        if (isDefending) actualDmg /= 2;
+        hp -= actualDmg;
         if (hp < 0) hp = 0;
     }
 
-    bool isAlive() const {
-        return hp > 0;
-    }
+    bool isAlive() const { return hp > 0; }
 };

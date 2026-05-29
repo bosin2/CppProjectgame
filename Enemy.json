@@ -20,9 +20,21 @@
         "   \\/  \\/  "
       ],
       "patterns": [
-        { "name": "화염 투척", "damage": 12, "type": "attack" },
-        { "name": "방어",      "damage": 0,  "type": "defend" },
-        { "name": "폭발",      "damage": 25, "type": "attack" }
+        {
+          "name": "화염 투척",
+          "damage": 12,
+          "type": "attack"
+        },
+        {
+          "name": "방어",
+          "damage": 0,
+          "type": "defend"
+        },
+        {
+          "name": "폭발",
+          "damage": 25,
+          "type": "attack"
+        }
       ]
     },
     {
@@ -45,9 +57,21 @@
         "  \\/  \\/  "
       ],
       "patterns": [
-        { "name": "화염 폭풍", "damage": 20, "type": "attack" },
-        { "name": "방어",      "damage": 0,  "type": "defend" },
-        { "name": "대폭발",    "damage": 35, "type": "attack" }
+        {
+          "name": "화염 폭풍",
+          "damage": 20,
+          "type": "attack"
+        },
+        {
+          "name": "방어",
+          "damage": 0,
+          "type": "defend"
+        },
+        {
+          "name": "대폭발",
+          "damage": 35,
+          "type": "attack"
+        }
       ]
     },
     {
@@ -70,9 +94,21 @@
         " \\/\\/\\/ "
       ],
       "patterns": [
-        { "name": "지옥불", "damage": 30, "type": "attack" },
-        { "name": "방어",   "damage": 0,  "type": "defend" },
-        { "name": "핵폭발", "damage": 50, "type": "attack" }
+        {
+          "name": "지옥불",
+          "damage": 30,
+          "type": "attack"
+        },
+        {
+          "name": "방어",
+          "damage": 0,
+          "type": "defend"
+        },
+        {
+          "name": "핵폭발",
+          "damage": 50,
+          "type": "attack"
+        }
       ]
     }
   ],
@@ -95,9 +131,21 @@
         "  ~~~~~  "
       ],
       "patterns": [
-        { "name": "물 채찍", "damage": 10, "type": "attack" },
-        { "name": "회복",    "damage": 10, "type": "heal"   },
-        { "name": "급류",    "damage": 20, "type": "attack" }
+        {
+          "name": "물 채찍",
+          "damage": 10,
+          "type": "attack"
+        },
+        {
+          "name": "회복",
+          "damage": 10,
+          "type": "heal"
+        },
+        {
+          "name": "급류",
+          "damage": 20,
+          "type": "attack"
+        }
       ]
     },
     {
@@ -118,9 +166,21 @@
         " ~~~~~~~ "
       ],
       "patterns": [
-        { "name": "파도", "damage": 18, "type": "attack" },
-        { "name": "회복", "damage": 30, "type": "heal"   },
-        { "name": "해일", "damage": 32, "type": "attack" }
+        {
+          "name": "파도",
+          "damage": 18,
+          "type": "attack"
+        },
+        {
+          "name": "회복",
+          "damage": 30,
+          "type": "heal"
+        },
+        {
+          "name": "해일",
+          "damage": 32,
+          "type": "attack"
+        }
       ]
     },
     {
@@ -141,9 +201,21 @@
         " ~~~~~~~~ "
       ],
       "patterns": [
-        { "name": "심해 압력", "damage": 28, "type": "attack" },
-        { "name": "회복",      "damage": 60, "type": "heal"   },
-        { "name": "쓰나미",    "damage": 45, "type": "attack" }
+        {
+          "name": "심해 압력",
+          "damage": 28,
+          "type": "attack"
+        },
+        {
+          "name": "회복",
+          "damage": 60,
+          "type": "heal"
+        },
+        {
+          "name": "쓰나미",
+          "damage": 45,
+          "type": "attack"
+        }
       ]
     }
   ],
@@ -152,7 +224,7 @@
       "id": 1,
       "grade": "하급",
       "name": "     놈",
-      "hp": 60,
+      "hp": 45,
       "ascii": [
         " +-----+ ",
         " | o o | ",
@@ -166,9 +238,21 @@
         " +--+--+ "
       ],
       "patterns": [
-        { "name": "돌 투척",   "damage": 15, "type": "attack" },
-        { "name": "방어",      "damage": 0,  "type": "defend" },
-        { "name": "암석 낙하", "damage": 30, "type": "attack" }
+        {
+          "name": "돌 투척",
+          "damage": 10,
+          "type": "attack"
+        },
+        {
+          "name": "방어",
+          "damage": 0,
+          "type": "defend"
+        },
+        {
+          "name": "암석 낙하",
+          "damage": 20,
+          "type": "attack"
+        }
       ]
     },
     {
@@ -189,9 +273,21 @@
         " +------+ "
       ],
       "patterns": [
-        { "name": "바위 던지기", "damage": 22, "type": "attack" },
-        { "name": "방어",        "damage": 0,  "type": "defend" },
-        { "name": "지진",        "damage": 38, "type": "attack" }
+        {
+          "name": "바위 던지기",
+          "damage": 22,
+          "type": "attack"
+        },
+        {
+          "name": "방어",
+          "damage": 0,
+          "type": "defend"
+        },
+        {
+          "name": "지진",
+          "damage": 38,
+          "type": "attack"
+        }
       ]
     },
     {
@@ -212,9 +308,21 @@
         " +--+++--+ "
       ],
       "patterns": [
-        { "name": "산사태", "damage": 32, "type": "attack" },
-        { "name": "방어",   "damage": 0,  "type": "defend" },
-        { "name": "대지진", "damage": 52, "type": "attack" }
+        {
+          "name": "산사태",
+          "damage": 32,
+          "type": "attack"
+        },
+        {
+          "name": "방어",
+          "damage": 0,
+          "type": "defend"
+        },
+        {
+          "name": "대지진",
+          "damage": 52,
+          "type": "attack"
+        }
       ]
     }
   ],
@@ -239,9 +347,21 @@
         "  ) __ ( "
       ],
       "patterns": [
-        { "name": "칼바람",    "damage": 8,  "type": "attack" },
-        { "name": "회피",      "damage": 0,  "type": "buff"   },
-        { "name": "진공 베기", "damage": 18, "type": "attack" }
+        {
+          "name": "칼바람",
+          "damage": 8,
+          "type": "attack"
+        },
+        {
+          "name": "회피",
+          "damage": 0,
+          "type": "buff"
+        },
+        {
+          "name": "진공 베기",
+          "damage": 18,
+          "type": "attack"
+        }
       ]
     },
     {
@@ -264,9 +384,21 @@
         "  )) __ (( "
       ],
       "patterns": [
-        { "name": "회오리", "damage": 15, "type": "attack" },
-        { "name": "회피",   "damage": 0,  "type": "buff"   },
-        { "name": "폭풍",   "damage": 28, "type": "attack" }
+        {
+          "name": "회오리",
+          "damage": 15,
+          "type": "attack"
+        },
+        {
+          "name": "회피",
+          "damage": 0,
+          "type": "buff"
+        },
+        {
+          "name": "폭풍",
+          "damage": 28,
+          "type": "attack"
+        }
       ]
     },
     {
@@ -289,9 +421,21 @@
         "  ))) __ ((( "
       ],
       "patterns": [
-        { "name": "대폭풍", "damage": 25, "type": "attack" },
-        { "name": "회피",   "damage": 0,  "type": "buff"   },
-        { "name": "태풍",   "damage": 42, "type": "attack" }
+        {
+          "name": "대폭풍",
+          "damage": 25,
+          "type": "attack"
+        },
+        {
+          "name": "회피",
+          "damage": 0,
+          "type": "buff"
+        },
+        {
+          "name": "태풍",
+          "damage": 42,
+          "type": "attack"
+        }
       ]
     }
   ],
@@ -302,7 +446,6 @@
       "name": "UNKNOWN",
       "hp": 300,
       "ascii": [
-
         "⠀⠀⠀⠀⢀⣀⣤⣴⣦⣤⣄⠀⠀⠀⠀⠀",
         "⠀⠀⠀⣴⣿⣿⣿⠿⣿⣿⣿⣧⡀⠀⠀⠀",
         "⠀⠀⠀⣿⣿⠋⢁⣀⡀⠙⣛⣿⣷⠀⠀⠀",
@@ -310,13 +453,74 @@
         "⠀⠀⠀⠀⠀⠀⢠⣖⢠⣼⣦⡀⠀⠀⠀⠀",
         "⠀⠀⠀⠀⠀⠀⠈⠉⠡⠼⠿⠁⠀⠀⠀⠀",
         "⠀⠀⠀⠀⠀⠀⠀⠠⣶⣶⡄⠀⠀⠀⠀⠀"
-
       ],
-      "patterns": [
-        { "name": "화염 강타", "damage": 35, "type": "attack" },
-        { "name": "냉기 파동", "damage": 30, "type": "attack" },
-        { "name": "암석 낙하", "damage": 40, "type": "attack" },
-        { "name": "방어",      "damage": 0,  "type": "defend" }
+      "firePatterns": [
+        {
+          "name": "화염 강타",
+          "damage": 35,
+          "type": "attack"
+        },
+        {
+          "name": "폭발",
+          "damage": 45,
+          "type": "attack"
+        },
+        {
+          "name": "방어",
+          "damage": 0,
+          "type": "defend"
+        }
+      ],
+      "waterPatterns": [
+        {
+          "name": "냉기 파동",
+          "damage": 30,
+          "type": "attack"
+        },
+        {
+          "name": "빙결",
+          "damage": 40,
+          "type": "attack"
+        },
+        {
+          "name": "방어",
+          "damage": 0,
+          "type": "defend"
+        }
+      ],
+      "earthPatterns": [
+        {
+          "name": "암석 낙하",
+          "damage": 35,
+          "type": "attack"
+        },
+        {
+          "name": "지진",
+          "damage": 45,
+          "type": "attack"
+        },
+        {
+          "name": "방어",
+          "damage": 0,
+          "type": "defend"
+        }
+      ],
+      "windPatterns": [
+        {
+          "name": "진공 베기",
+          "damage": 30,
+          "type": "attack"
+        },
+        {
+          "name": "폭풍",
+          "damage": 42,
+          "type": "attack"
+        },
+        {
+          "name": "방어",
+          "damage": 0,
+          "type": "defend"
+        }
       ]
     }
   ]
