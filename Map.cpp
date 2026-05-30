@@ -21,7 +21,7 @@ void initMap() {
 
     // 2. 우물 랜덤 배치
     int wellCount = 0;
-    while (wellCount < 20) {
+    while (wellCount < 15) {
         int r = rand() % ROWS;
         int c = rand() % (COLS - 2) + 1; // 첫열, 보스열 제외
         if (gameMap[r][c] != WELL) {
@@ -57,10 +57,24 @@ void drawStartMap() {
 
         for (int c = 0; c < COLS; c++) {
             cout << "┃";
-            if (c == 0)
-                cout << (r + 1) << " "; // 1~5 표시
-            else
-                cout << BLACK << "██" << CLR; // 나머지 가리기
+            if (c == 0) {
+                cout << (r + 1) << " "; 
+            }
+            else {
+                switch (gameMap[r][c]) {
+                case MONSTER:
+                    switch (elementMap[r][c]) {
+                    case FIRE:  cout << RB << "  " << CLR; break;
+                    case WATER: cout << BB << "  " << CLR; break;
+                    case EARTH: cout << GB << "  " << CLR; break;
+                    case WIND:  cout << YB << "  " << CLR; break;
+                    }
+                    break;
+                case WELL:  cout << WB << "  " << CLR; break;
+                case BOSS:  cout << BOLD << PINK << "★ " << CLR; break;
+                case VISIT: cout << "  ";                 break;
+                }
+            }
         }
         cout << "┃\n";
     }
@@ -69,7 +83,7 @@ void drawStartMap() {
     for (int c = 1; c < COLS; c++) cout << "┻━━";
     cout << "┛\n";
 
-    cout << "\n  시작 위치 선택 ";
+    cout << "\n  시작 위치 선택(번호가 적힌 타일 중에서 고르세요) ";
 }
 
 // 메인 맵 화면

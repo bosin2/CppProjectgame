@@ -254,7 +254,7 @@ bool startBattle(Player& player, Enemy& enemy) {
             }
         }
         else if (choice == 2) { // 조합 공격
-            if (player.mp >= 5) { 
+            if (player.mp >= 6) { 
                 drawSkillMenu(player, 2);
             
                 int ult = -1;
@@ -284,7 +284,7 @@ bool startBattle(Player& player, Enemy& enemy) {
                 else if (ult == 6 && hasElement(player, "흙") && hasElement(player, "바람")) { possible = true; skillName = "모래 폭풍"; elem1 = "흙"; elem2 = "바람"; }
 
                 if (possible) {
-                    player.mp -= 5; 
+                    player.mp -= 6; 
                     
                     int dmg1 = getElementDamage(player, elem1);
                     int dmg2 = getElementDamage(player, elem2);
@@ -507,7 +507,7 @@ bool startBossBattle(Player& player, Boss& boss) {
             } else msg = "마나가 부족합니다.";
         }
         else if (choice == 2) { // 조합 공격
-            if (player.mp >= 5) { 
+            if (player.mp >= 6) { 
                 drawSkillMenu(player, 2);
                 int ult = -1;
                 while (ult == -1) {
@@ -528,7 +528,7 @@ bool startBossBattle(Player& player, Boss& boss) {
                 else if (ult == 6 && hasElement(player, "흙") && hasElement(player, "바람")) { possible = true; skillName = "모래 폭풍"; elem1 = "흙"; elem2 = "바람"; }
 
                 if (possible) {
-                    player.mp -= 5; 
+                    player.mp -= 6; 
                     int dmg1 = getElementDamage(player, elem1);
                     int dmg2 = getElementDamage(player, elem2);
                     float mult1 = elemCounter(elem1, boss.element);
@@ -599,11 +599,10 @@ bool startBossBattle(Player& player, Boss& boss) {
                 boss.lifeSteal = currentLife;
                 boss.evadeChance = currentEvade;
 
-                // 밸런스 패치: 페이즈 극복 보상 확대 (HP 회복 +50 ➔ +70 / MP 회복 +30 ➔ +50)
-                player.hp = min(player.hp + 70, player.maxHp);
-                player.mp = min(player.mp + 50, player.maxMp);
+                player.hp = min(player.hp + 60, player.maxHp);
+                player.mp = min(player.mp + 30, player.maxMp);
                 
-                msg = "보스가 다음 페이즈로 돌입합니다! 체력(+70)과 마나(+50)가 회복되었습니다. (페이즈 " + to_string(boss.phase) + ")";
+                msg = "보스가 다음 페이즈로 돌입합니다! 체력(+60)과 마나(+30)가 회복되었습니다.";
                 drawBattle(player, boss, msg);
                 Sleep(2000);
                 continue; 
