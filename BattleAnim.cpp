@@ -347,7 +347,6 @@ static vector<string> getEnemyProjectile(string element) {
         "∼∿∼∿ ⟫⟫",
         " ∼∿∼ ⟫"
     };
-    // boss (all) - 보라색 전용
     return {
         " ◆◇◆ ►",
         "◆◇◆◇ ►►",
@@ -361,7 +360,7 @@ void animEnemyAttack(Enemy& enemy) {
     vector<string> bullet = getEnemyProjectile(enemy.element);
 
     // 몬스터 왼쪽 바깥(col 42)에서 출발 → 슬라임(col 12)
-    moveArt(10, 42, 12, bullet, color, 25);
+    moveArt(10, 45, 12, bullet, color, 25);
 
     // 착탄 이펙트
     vector<string> impact = { " *  ", "* * *", " *  " };

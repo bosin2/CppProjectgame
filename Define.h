@@ -26,6 +26,7 @@ extern const char* PINK;
 extern const char* WHITE;
 extern const char* BLACK;
 extern const char* BOLD;
+extern const char* REVERSE;  // 반전 강조 (호버 효과용)
 
 // 배경색 코드
 extern const char* WB;

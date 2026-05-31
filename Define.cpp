@@ -27,6 +27,7 @@ const char* BLACK = "\x1b[30m";
 
 // 볼드체
 const char* BOLD = "\x1b[1m";
+const char* REVERSE = "\x1b[7m"; // 전경/배경 반전 (호버 효과)
 
 // 배경색 코드
 const char* WB = "\x1b[47m";

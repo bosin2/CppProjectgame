@@ -19,7 +19,7 @@ void drawScene(string art[], int artC, string txt) {
 
     cout << "\n\n";
 
-    cout << "➤ 아무 곳이나 클릭하세요 ";
+    cout << "➤  아무 곳이나 클릭하세요 ";
 
     waitAnyClick(); 
 }
@@ -136,7 +136,7 @@ void showPrologue() {
 //설명창
 void showExplan() {
     cout << CLEAR;
-    cout << "\n\n   ======= [ 게임 설명 ] =======\n\n";
+    cout << "\n\n   ===================== [ 게임 설명 ] =====================\n\n";
     cout << "   - 원소를 수집하고 진화시켜 정령들을 무찌르세요.\n";
     cout << "   - 마우스 클릭만으로 모든 조작이 가능합니다.\n";
     cout << "   - 상성에 맞는 원소 공격은 피해가 2배가 됩니다.\n\n";
@@ -162,7 +162,7 @@ void showExplan() {
     cout << "   - 물 + 바람 : 빙결 화살\n";
     cout << "   - 흙 + 바람 : 모래 폭풍\n";
     
-    cout << "   ➤ 아무 곳이나 클릭하면 타이틀로 돌아갑니다. ";
+    cout << "\n   ➤ 아무 곳이나 클릭하면 타이틀로 돌아갑니다. ";
     waitAnyClick();
 }
 

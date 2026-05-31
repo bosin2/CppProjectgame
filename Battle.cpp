@@ -10,6 +10,65 @@
 #include <windows.h>
 using namespace std;
 
+// 전방 선언
+bool hasElement(Player& p, string name);
+
+// ── 액션 메뉴(mode 0) 호버 라인 업데이트 ──
+void updateActionHover(int hovered) {
+    gotoxy(20, 1);
+    if (hovered == 1) cout << "┃  " << REVERSE << "▶  원소 공격   (MP:  2)          " << CLR << "┃";
+    else              cout << "┃  " << YELLOW << BOLD << "▶  원소 공격   (MP:  2)" << CLR << "          ┃";
+
+    gotoxy(21, 1);
+    if (hovered == 2) cout << "┃  " << REVERSE << "▶  조합 공격   (MP:  5)          " << CLR << "┃";
+    else              cout << "┃  " << CYAN << BOLD << "▶  조합 공격   (MP:  5)" << CLR << "          ┃";
+
+    gotoxy(22, 1);
+    if (hovered == 3) cout << "┃  " << REVERSE << "▶  방어 하기   (MP +10)          " << CLR << "┃";
+    else              cout << "┃  " << GREEN << BOLD << "▶  방어 하기   (MP +10)" << CLR << "          ┃";
+}
+
+// ── 원소 공격 슬롯(mode 1) 호버 라인 업데이트 ──
+void updateSlotHover(Player& player, int hovered) {
+    string slots[3];
+    for (int i = 0; i < 3; i++)
+        slots[i] = player.slots[i].empty() ? "비어있음" : player.slots[i];
+
+    for (int i = 0; i < 3; i++) {
+        gotoxy(21 + i, 1);
+        // 라인 전체를 공백으로 초기화 후 내용 덮어쓰기
+        cout << "                                                                    ";
+        gotoxy(21 + i, 1);
+        if (hovered == i + 1)
+            cout << "┃  " << REVERSE << " ▶ [" << (i+1) << "] " << slots[i] << " " << CLR;
+        else
+            cout << "┃  " << YELLOW << "▶ [" << (i+1) << "] " << CLR << slots[i];
+    }
+}
+
+// ── 조합 공격(mode 2) 호버 라인 업데이트 ──
+void updateComboHover(Player& player, int hovered) {
+    struct ComboEntry { int idx; const char* label; string e1; string e2; };
+    ComboEntry combos[] = {
+        {1, "증기 폭발 (불+물)  ", "불", "물"},
+        {2, "용암 투척 (불+흙)  ", "불", "흙"},
+        {3, "화염 돌풍 (불+바람)", "불", "바람"},
+        {4, "진흙 늪   (물+흙)  ", "물", "흙"},
+        {5, "빙결 화살 (물+바람)", "물", "바람"},
+        {6, "모래 폭풍 (흙+바람)", "흙", "바람"},
+    };
+    for (auto& c : combos) {
+        gotoxy(20 + c.idx, 1);
+        bool avail = hasElement(player, c.e1) && hasElement(player, c.e2);
+        if (hovered == c.idx && avail)
+            cout << "┃  " << REVERSE << "▶ [" << c.idx << "] " << c.label << "          " << CLR;
+        else if (avail)
+            cout << "┃  " << CYAN << "▶ [" << c.idx << "] " << c.label << CLR << "          ";
+        else
+            cout << "┃  " << WHITE << "  [" << c.idx << "] [잠금]          " << CLR;
+    }
+}
+
 void enemyDie(Player& player, Enemy& enemy, string& msg) {
     animEnemyDie(enemy);
     enemy.ascii.clear();
@@ -142,13 +201,13 @@ void drawSkillMenu(Player& player, int mode) {
         gotoxy(19, 1); cout << "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓";
         gotoxy(20, 1); cout << "┃  " << YELLOW << BOLD << "▶  원소 공격   (MP:  2)" << CLR << "          ┃";
         gotoxy(21, 1); cout << "┃  " << CYAN   << BOLD << "▶  조합 공격   (MP:  5)" << CLR << "          ┃"; 
-        gotoxy(22, 1); cout << "┃  " << GREEN  << BOLD << "▶  방어 하기             " << CLR << "        ┃";
+        gotoxy(22, 1); cout << "┃  " << GREEN  << BOLD << "▶  방어 하기   (MP +10)  " << CLR << "        ┃";
         gotoxy(23, 1); cout << "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
         gotoxy(25, 1); cout << "  [ 원하는 행동을 클릭하세요 ]          ";
     }
     else if (mode == 1) {
         gotoxy(19, 1); cout << "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓";
-        gotoxy(20, 1); cout << "┃   " << BOLD << "[ 원소 공격 목록  (MP: 2) ]" << CLR << "          ┃";
+        gotoxy(20, 1); cout << "┃   " << BOLD << "[ 원소 공격 목록  (MP: 2) ]" << CLR << "        ┃";
         gotoxy(21, 1); cout << "┃  " << YELLOW << "▶ [1] " << CLR << (player.slots[0] == "" ? "비어있음" : player.slots[0]) << "                                  ";
         gotoxy(22, 1); cout << "┃  " << YELLOW << "▶ [2] " << CLR << (player.slots[1] == "" ? "비어있음" : player.slots[1]) << "                                  ";
         gotoxy(23, 1); cout << "┃  " << YELLOW << "▶ [3] " << CLR << (player.slots[2] == "" ? "비어있음" : player.slots[2]) << "                                  ";
@@ -157,13 +216,13 @@ void drawSkillMenu(Player& player, int mode) {
     }
     else if (mode == 2) {
         gotoxy(19, 1); cout << "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓";
-        gotoxy(20, 1); cout << "┃   " << BOLD << "[ 조합 공격 목록  (MP: 5) ]" << CLR << "             ┃"; 
-        gotoxy(21, 1); cout << "┃  " << (hasElement(player, "불") && hasElement(player, "물") ? string(CYAN) + "▶ [1] 증기 폭발 (불+물)  " + CLR : string(WHITE) + "  [1] [잠금]          " + CLR) << "               ┃";
-        gotoxy(22, 1); cout << "┃  " << (hasElement(player, "불") && hasElement(player, "흙") ? string(CYAN) + "▶ [2] 용암 투척 (불+흙)  " + CLR : string(WHITE) + "  [2] [잠금]          " + CLR) << "               ┃";
-        gotoxy(23, 1); cout << "┃  " << (hasElement(player, "불") && hasElement(player, "바람") ? string(CYAN) + "▶ [3] 화염 돌풍 (불+바람)" + CLR : string(WHITE) + "  [3] [잠금]          " + CLR) << "              ┃";
-        gotoxy(24, 1); cout << "┃  " << (hasElement(player, "물") && hasElement(player, "흙") ? string(CYAN) + "▶ [4] 진흙 늪   (물+흙)  " + CLR : string(WHITE) + "  [4] [잠금]          " + CLR) << "                ┃";
-        gotoxy(25, 1); cout << "┃  " << (hasElement(player, "물") && hasElement(player, "바람") ? string(CYAN) + "▶ [5] 빙결 화살 (물+바람)" + CLR : string(WHITE) + "  [5] [잠금]          " + CLR) << "               ┃";
-        gotoxy(26, 1); cout << "┃  " << (hasElement(player, "흙") && hasElement(player, "바람") ? string(CYAN) + "▶ [6] 모래 폭풍 (흙+바람)" + CLR : string(WHITE) + "  [6] [잠금]          " + CLR) << "               ┃";
+        gotoxy(20, 1); cout << "┃   " << BOLD << "[ 조합 공격 목록  (MP: 5) ]" << CLR << "           ┃"; 
+        gotoxy(21, 1); cout << "┃  " << (hasElement(player, "불") && hasElement(player, "물") ? string(CYAN) + "▶ [1] 증기 폭발 (불+물)  " + CLR : string(WHITE) + "  [1] [잠금]          " + CLR);
+        gotoxy(22, 1); cout << "┃  " << (hasElement(player, "불") && hasElement(player, "흙") ? string(CYAN) + "▶ [2] 용암 투척 (불+흙)  " + CLR : string(WHITE) + "  [2] [잠금]          " + CLR);
+        gotoxy(23, 1); cout << "┃  " << (hasElement(player, "불") && hasElement(player, "바람") ? string(CYAN) + "▶ [3] 화염 돌풍 (불+바람)" + CLR : string(WHITE) + "  [3] [잠금]          " + CLR);
+        gotoxy(24, 1); cout << "┃  " << (hasElement(player, "물") && hasElement(player, "흙") ? string(CYAN) + "▶ [4] 진흙 늪   (물+흙)  " + CLR : string(WHITE) + "  [4] [잠금]          " + CLR);
+        gotoxy(25, 1); cout << "┃  " << (hasElement(player, "물") && hasElement(player, "바람") ? string(CYAN) + "▶ [5] 빙결 화살 (물+바람)" + CLR : string(WHITE) + "  [5] [잠금]          " + CLR);
+        gotoxy(26, 1); cout << "┃  " << (hasElement(player, "흙") && hasElement(player, "바람") ? string(CYAN) + "▶ [6] 모래 폭풍 (흙+바람)" + CLR : string(WHITE) + "  [6] [잠금]          " + CLR);
         gotoxy(27, 1); cout << "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
         gotoxy(28, 1); cout << "  [ 번호 클릭 / 박스 밖 클릭 = 뒤로 ]     ";
     }
@@ -180,26 +239,46 @@ bool startBattle(Player& player, Enemy& enemy) {
     while (player.hp > 0 && enemy.hp > 0) {
         drawBattle(player, enemy, msg);
         drawSkillMenu(player, 0);
-        
+        flushInput();
+
         int choice = 0;
+        int hovAct = 0;
         while (choice == 0) {
-            COORD pos = getMouseClick();
-            if (pos.Y == 19) choice = 1;      
-            else if (pos.Y == 20) choice = 2; 
-            else if (pos.Y == 21) choice = 3;
+            bool isClick;
+            COORD pos = getMouseEvent(isClick);
+            int newHov = 0;
+            if (pos.Y == 19) newHov = 1;
+            else if (pos.Y == 20) newHov = 2;
+            else if (pos.Y == 21) newHov = 3;
+            if (newHov != hovAct) { hovAct = newHov; updateActionHover(hovAct); }
+            if (isClick) {
+                if (pos.Y == 19) choice = 1;
+                else if (pos.Y == 20) choice = 2;
+                else if (pos.Y == 21) choice = 3;
+            }
         }
 
         if (choice == 1) { // 원소 공격
             if (player.mp >= 2) {
                 drawSkillMenu(player, 1);
-                
+                flushInput();
+
                 int sel = -1;
+                int hovSlot = 0;
                 while (sel == -1) {
-                    COORD pos = getMouseClick();
-                    if (pos.Y == 20) sel = 1;      
-                    else if (pos.Y == 21) sel = 2; 
-                    else if (pos.Y == 22) sel = 3; 
-                    else sel = 0;
+                    bool isClick;
+                    COORD pos = getMouseEvent(isClick);
+                    int newHov = 0;
+                    if (pos.Y == 20) newHov = 1;
+                    else if (pos.Y == 21) newHov = 2;
+                    else if (pos.Y == 22) newHov = 3;
+                    if (newHov != hovSlot) { hovSlot = newHov; updateSlotHover(player, hovSlot); }
+                    if (isClick) {
+                        if (pos.Y == 20) sel = 1;
+                        else if (pos.Y == 21) sel = 2;
+                        else if (pos.Y == 22) sel = 3;
+                        else sel = 0;
+                    }
                 }
 
                 if (sel == 0) continue;
@@ -254,19 +333,27 @@ bool startBattle(Player& player, Enemy& enemy) {
             }
         }
         else if (choice == 2) { // 조합 공격
-            if (player.mp >= 6) { 
+            if (player.mp >= 6) {
                 drawSkillMenu(player, 2);
-            
+                flushInput();
+
                 int ult = -1;
+                int hovCombo = 0;
                 while (ult == -1) {
-                    COORD pos = getMouseClick();
-                    if (pos.Y == 20) ult = 1;      
-                    else if (pos.Y == 21) ult = 2; 
-                    else if (pos.Y == 22) ult = 3; 
-                    else if (pos.Y == 23) ult = 4; 
-                    else if (pos.Y == 24) ult = 5; 
-                    else if (pos.Y == 25) ult = 6; 
-                    else ult = 0; 
+                    bool isClick;
+                    COORD pos = getMouseEvent(isClick);
+                    int newHov = 0;
+                    if (pos.Y >= 20 && pos.Y <= 25) newHov = pos.Y - 19;
+                    if (newHov != hovCombo) { hovCombo = newHov; updateComboHover(player, hovCombo); }
+                    if (isClick) {
+                        if (pos.Y == 20) ult = 1;
+                        else if (pos.Y == 21) ult = 2;
+                        else if (pos.Y == 22) ult = 3;
+                        else if (pos.Y == 23) ult = 4;
+                        else if (pos.Y == 24) ult = 5;
+                        else if (pos.Y == 25) ult = 6;
+                        else ult = 0;
+                    }
                 }
 
                 if (ult == 0) continue;
@@ -332,8 +419,10 @@ bool startBattle(Player& player, Enemy& enemy) {
         }
         else if (choice == 3) {
             player.defend();
+            int mpGain = min(10, player.maxMp - player.mp);
+            player.mp += mpGain;
             animSlimeDefend(player);
-            msg = "방어 자세를 취했습니다.";
+            msg = "방어 자세를 취했습니다. (MP +" + to_string(mpGain) + ")";
         }
         else continue;
 
@@ -439,29 +528,48 @@ bool startBossBattle(Player& player, Boss& boss) {
 
     while (player.isAlive() && boss.isAlive()) {
 
-        // 보스전 시작/턴 교대 시 즉시 갱신하여 슬롯 글자 깨짐 완전 방지
         drawBattle(player, boss, msg);
         drawSkillMenu(player, 0);
-        
+        flushInput();
+
         int choice = 0;
+        int hovAct = 0;
         while (choice == 0) {
-            COORD pos = getMouseClick();
-            if (pos.Y == 19) choice = 1;
-            else if (pos.Y == 20) choice = 2;
-            else if (pos.Y == 21) choice = 3;
+            bool isClick;
+            COORD pos = getMouseEvent(isClick);
+            int newHov = 0;
+            if (pos.Y == 19) newHov = 1;
+            else if (pos.Y == 20) newHov = 2;
+            else if (pos.Y == 21) newHov = 3;
+            if (newHov != hovAct) { hovAct = newHov; updateActionHover(hovAct); }
+            if (isClick) {
+                if (pos.Y == 19) choice = 1;
+                else if (pos.Y == 20) choice = 2;
+                else if (pos.Y == 21) choice = 3;
+            }
         }
 
         // ── 플레이어 턴 ──
         if (choice == 1) { // 원소 공격
             if (player.mp >= 2) {
                 drawSkillMenu(player, 1);
+                flushInput();
                 int sel = -1;
+                int hovSlot = 0;
                 while (sel == -1) {
-                    COORD pos = getMouseClick();
-                    if (pos.Y == 20) sel = 1;
-                    else if (pos.Y == 21) sel = 2;
-                    else if (pos.Y == 22) sel = 3;
-                    else sel = 0;
+                    bool isClick;
+                    COORD pos = getMouseEvent(isClick);
+                    int newHov = 0;
+                    if (pos.Y == 20) newHov = 1;
+                    else if (pos.Y == 21) newHov = 2;
+                    else if (pos.Y == 22) newHov = 3;
+                    if (newHov != hovSlot) { hovSlot = newHov; updateSlotHover(player, hovSlot); }
+                    if (isClick) {
+                        if (pos.Y == 20) sel = 1;
+                        else if (pos.Y == 21) sel = 2;
+                        else if (pos.Y == 22) sel = 3;
+                        else sel = 0;
+                    }
                 }
                 if (sel == 0) continue;
                 int idx = sel - 1;
@@ -507,13 +615,21 @@ bool startBossBattle(Player& player, Boss& boss) {
             } else msg = "마나가 부족합니다.";
         }
         else if (choice == 2) { // 조합 공격
-            if (player.mp >= 6) { 
+            if (player.mp >= 6) {
                 drawSkillMenu(player, 2);
+                flushInput();
                 int ult = -1;
+                int hovCombo = 0;
                 while (ult == -1) {
-                    COORD pos = getMouseClick();
-                    if (pos.Y >= 20 && pos.Y <= 25) ult = pos.Y - 19;
-                    else ult = 0;
+                    bool isClick;
+                    COORD pos = getMouseEvent(isClick);
+                    int newHov = 0;
+                    if (pos.Y >= 20 && pos.Y <= 25) newHov = pos.Y - 19;
+                    if (newHov != hovCombo) { hovCombo = newHov; updateComboHover(player, hovCombo); }
+                    if (isClick) {
+                        if (pos.Y >= 20 && pos.Y <= 25) ult = pos.Y - 19;
+                        else ult = 0;
+                    }
                 }
                 if (ult == 0) continue;
 
@@ -567,8 +683,10 @@ bool startBossBattle(Player& player, Boss& boss) {
         }
         else if (choice == 3) {
             player.defend();
+            int mpGain = min(10, player.maxMp - player.mp);
+            player.mp += mpGain;
             animSlimeDefend(player);
-            msg = "방어 자세를 취했습니다.";
+            msg = "방어 자세를 취했습니다. (MP +" + to_string(mpGain) + ")";
         }
         else continue;
 
@@ -599,10 +717,10 @@ bool startBossBattle(Player& player, Boss& boss) {
                 boss.lifeSteal = currentLife;
                 boss.evadeChance = currentEvade;
 
-                player.hp = min(player.hp + 60, player.maxHp);
+                player.hp = min(player.hp + 80, player.maxHp);
                 player.mp = min(player.mp + 30, player.maxMp);
                 
-                msg = "보스가 다음 페이즈로 돌입합니다! 체력(+60)과 마나(+30)가 회복되었습니다.";
+                msg = "보스가 다음 페이즈로 돌입합니다! 체력(+80)과 마나(+30)가 회복되었습니다.";
                 drawBattle(player, boss, msg);
                 Sleep(2000);
                 continue; 
